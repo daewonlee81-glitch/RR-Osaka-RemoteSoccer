@@ -1,0 +1,1260 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>RoboRAVE Osaka 2026 · SoccerBot Remote</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><text y='26' font-size='26'>⚽</text></svg>">
+<style>
+:root{--bg:#0b1020;--bg2:#131a2e;--card:#182036;--card2:#1f2942;--line:#2b3654;--txt:#eef2ff;--dim:#97a3c4;
+--accent:#4f8cff;--live:#ef4444;--ok:#22c55e;--warn:#f59e0b;--mono:ui-monospace,"SF Mono",Menlo,Consolas,monospace}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0;background:radial-gradient(1200px 700px at 20% -10%,#1c2748 0,var(--bg) 55%) fixed;color:var(--txt);
+font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans JP","Noto Sans TC","Noto Sans KR","Apple SD Gothic Neo","Hiragino Sans","Microsoft JhengHei",Roboto,sans-serif;-webkit-text-size-adjust:100%}
+a{color:inherit;text-decoration:none}
+button,select,input{font-family:inherit;font-size:inherit}
+.wrap{max-width:1600px;margin:0 auto;padding:16px}
+.topbar{display:flex;align-items:center;gap:12px;flex-wrap:wrap;padding:10px 16px;border-bottom:1px solid var(--line);
+background:rgba(11,16,32,.85);backdrop-filter:blur(10px);position:sticky;top:0;z-index:40}
+.brand{display:flex;flex-direction:column;line-height:1.15}.brand b{font-size:14px}.brand span{font-size:11px;color:var(--dim)}
+.spacer{flex:1}
+.langbar{display:flex;gap:3px;background:var(--card);padding:3px;border-radius:999px;border:1px solid var(--line)}
+.langbar button{border:0;background:transparent;color:var(--dim);padding:5px 11px;border-radius:999px;cursor:pointer;font-size:12.5px;font-weight:700}
+.langbar button.on{background:var(--accent);color:#fff}
+.tabs{display:flex;gap:5px}
+.tabs button{padding:7px 13px;border-radius:9px;font-size:13px;font-weight:700;color:var(--dim);border:1px solid transparent;background:transparent;cursor:pointer}
+.tabs button:hover{color:var(--txt);background:var(--card)}
+.tabs button.on{color:var(--txt);background:var(--card2);border-color:var(--line)}
+.dot{width:8px;height:8px;border-radius:50%;background:var(--ok);display:inline-block}
+.dot.off{background:var(--live)}.dot.warn{background:var(--warn)}
+.conn{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--dim)}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:15px}
+.card h2{margin:0 0 11px;font-size:14px;letter-spacing:.3px;color:var(--dim);text-transform:uppercase}
+.grid{display:grid;gap:13px}.g3{grid-template-columns:repeat(3,1fr)}.g2{grid-template-columns:repeat(2,1fr)}
+@media(max-width:980px){.g3,.g2{grid-template-columns:1fr}}
+.row{display:flex;gap:9px;align-items:center;flex-wrap:wrap}
+select,input[type=text],input[type=password],input[type=number]{background:var(--bg2);color:var(--txt);border:1px solid var(--line);
+border-radius:9px;padding:9px 11px;outline:none;min-width:0;width:100%}
+select:focus,input:focus{border-color:var(--accent)}
+label.fld{display:flex;flex-direction:column;gap:4px;font-size:12px;color:var(--dim);font-weight:700}
+.btn{border:1px solid var(--line);background:var(--card2);color:var(--txt);padding:9px 15px;border-radius:9px;cursor:pointer;font-weight:700;font-size:13.5px}
+.btn:hover{background:#2a3757}.btn:disabled{opacity:.35;cursor:not-allowed}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:#fff}
+.btn.danger{background:var(--live);border-color:var(--live);color:#fff}
+.btn.ok{background:var(--ok);border-color:var(--ok);color:#04210f}
+.btn.big{padding:15px 24px;font-size:16px;border-radius:12px}
+.btn.ghost{background:transparent}
+.pill{display:inline-flex;align-items:center;gap:4px;padding:3px 8px;border-radius:999px;font-size:10.5px;font-weight:800;letter-spacing:.4px;text-transform:uppercase}
+.pill.ES{background:rgba(59,130,246,.18);color:#93bbff}.pill.MS{background:rgba(16,185,129,.18);color:#6ee7b7}
+.pill.HS{background:rgba(245,158,11,.18);color:#fcd34d}
+.pill.live{background:rgba(239,68,68,.2);color:#fca5a5}.pill.finished{background:rgba(34,197,94,.16);color:#86efac}
+.pill.scheduled{background:rgba(148,163,184,.15);color:#cbd5e1}
+.pill.S,.pill.F,.pill.T{background:rgba(168,85,247,.18);color:#d8b4fe}
+.pill.moved{background:rgba(245,158,11,.2);color:#fcd34d}
+.pill.lo{background:rgba(148,163,184,.2);color:#e2e8f0}
+table{width:100%;border-collapse:collapse;font-size:13px}
+th,td{padding:7px 8px;text-align:left;border-bottom:1px solid var(--line)}
+th{color:var(--dim);font-size:11px;text-transform:uppercase;letter-spacing:.4px;font-weight:700}
+td.num,th.num{text-align:center;font-variant-numeric:tabular-nums}
+tbody tr:hover{background:rgba(255,255,255,.03)}
+tr.seed td:first-child{box-shadow:inset 3px 0 0 var(--accent)}
+tr.lo{opacity:.72}
+.tid{font-family:var(--mono);font-size:11px;color:var(--dim)}
+.matchbar{display:grid;grid-template-columns:1fr auto 1fr;gap:11px}
+@media(max-width:820px){.matchbar{grid-template-columns:1fr}}
+.side{background:var(--card);border:1px solid var(--line);border-radius:15px;padding:16px;display:flex;flex-direction:column;align-items:center;gap:10px}
+.side .lbl{font-size:10.5px;letter-spacing:1.4px;color:var(--dim);font-weight:800}
+.side .tname{font-size:clamp(17px,2.5vw,25px);font-weight:800;text-align:center;line-height:1.2}
+.side .tmeta{font-size:11.5px;color:var(--dim);text-align:center}
+.side .sc{font-size:clamp(58px,11vw,110px);font-weight:900;line-height:.95;font-variant-numeric:tabular-nums}
+.side.h{border-top:4px solid var(--accent)}.side.a{border-top:4px solid #a855f7}
+.goalbtn{width:100%;padding:18px;font-size:19px}
+.clock{background:var(--card);border:1px solid var(--line);border-radius:15px;padding:16px;min-width:268px;
+display:flex;flex-direction:column;align-items:center;justify-content:center;gap:9px}
+.clock .t{font-family:var(--mono);font-size:clamp(42px,8.5vw,78px);font-weight:800;font-variant-numeric:tabular-nums;letter-spacing:-2px}
+.clock .t.warn{color:var(--warn)}.clock .t.danger{color:var(--live);animation:pulse 1s infinite}
+@keyframes pulse{50%{opacity:.45}}
+.periodtabs{display:flex;gap:5px}
+.periodtabs button{padding:6px 14px;border-radius:999px;border:1px solid var(--line);background:var(--bg2);color:var(--dim);cursor:pointer;font-weight:700;font-size:12.5px}
+.periodtabs button.on{background:var(--accent);border-color:var(--accent);color:#fff}
+.banner{padding:11px 15px;border-radius:11px;font-weight:800;text-align:center;margin-top:12px}
+.banner.mercy{background:rgba(239,68,68,.16);color:#fca5a5;border:1px solid rgba(239,68,68,.4)}
+.banner.done{background:rgba(34,197,94,.14);color:#86efac;border:1px solid rgba(34,197,94,.4)}
+.banner.info{background:rgba(79,140,255,.14);color:#a9c8ff;border:1px solid rgba(79,140,255,.35)}
+.banner.warn{background:rgba(245,158,11,.14);color:#fcd34d;border:1px solid rgba(245,158,11,.4)}
+.matchlist{max-height:60vh;overflow:auto}
+.mrow{display:grid;grid-template-columns:58px 1fr auto;gap:9px;align-items:center;padding:8px 9px;border-bottom:1px solid var(--line);cursor:pointer;font-size:13px}
+.mrow:hover{background:rgba(255,255,255,.04)}.mrow.on{background:rgba(79,140,255,.15)}
+.mrow .tm{font-family:var(--mono);color:var(--dim);font-size:11.5px}
+.mrow.fin .vs{color:var(--dim)}
+#boards{display:grid;grid-auto-rows:1fr;gap:13px;min-height:0;overflow:hidden}
+.board{background:linear-gradient(180deg,#101a33,#0a1020);border:1px solid var(--line);border-radius:20px;padding:22px;
+display:flex;flex-direction:column;gap:13px;justify-content:center;min-height:0}
+.board .fieldtag{font-size:12px;letter-spacing:2px;color:var(--dim);font-weight:800}
+.board .teams{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:16px}
+.board .tn{font-size:clamp(19px,2.9vw,38px);font-weight:900;line-height:1.1}
+.board .tn.r{text-align:right}
+.board .big{font-family:var(--mono);font-size:clamp(52px,10vw,140px);font-weight:900;font-variant-numeric:tabular-nums;text-align:center}
+.board .clockbig{font-family:var(--mono);font-size:clamp(40px,7.5vw,96px);font-weight:800;text-align:center;font-variant-numeric:tabular-nums}
+.board .st{text-align:center;font-size:14px;color:var(--dim);font-weight:700;letter-spacing:2px}
+#boards.multi .board{padding:13px 18px;gap:7px;border-radius:15px}
+#boards.multi .tn{font-size:clamp(15px,2vw,26px)}
+#boards.multi .big{font-size:clamp(30px,6vh,60px)}
+#boards.multi .clockbig{font-size:clamp(23px,5vh,50px)}
+#boards.multi .st{font-size:11.5px;letter-spacing:1px}
+.sc-wrap{height:100vh;height:100dvh;overflow:hidden;display:flex;flex-direction:column;padding:16px 20px;gap:13px}
+.sc-main{flex:1;display:grid;grid-template-columns:1fr 380px;gap:16px;min-height:0}
+@media(max-width:1100px){.sc-main{grid-template-columns:1fr}}
+.uplist{display:flex;flex-direction:column;gap:8px;overflow:auto}
+.upitem{background:var(--card);border:1px solid var(--line);border-radius:11px;padding:10px 12px}
+.upitem .t{font-family:var(--mono);font-size:11.5px;color:var(--dim)}
+.upitem .n{font-size:14px;font-weight:700;margin-top:2px}
+.muted{color:var(--dim)}.tiny{font-size:12px}.center{text-align:center}.hidden{display:none!important}
+.toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);background:var(--card2);border:1px solid var(--line);
+color:var(--txt);padding:12px 20px;border-radius:11px;font-weight:700;z-index:100;box-shadow:0 12px 40px rgba(0,0,0,.5);max-width:90vw;text-align:center}
+.toast.err{background:var(--live);border-color:var(--live);color:#fff}
+.toast.ok{background:var(--ok);border-color:var(--ok);color:#04210f}
+.podium{display:flex;gap:9px;flex-wrap:wrap}
+.pod{flex:1;min-width:140px;background:var(--bg2);border:1px solid var(--line);border-radius:11px;padding:11px}
+.pod .r{font-size:10.5px;letter-spacing:1px;color:var(--dim);font-weight:800}
+.pod .n{font-size:15px;font-weight:800;margin-top:3px}
+.pod.g{border-color:#d4af37}.pod.s{border-color:#b8c0cc}.pod.b{border-color:#cd7f32}
+.bar{height:7px;background:var(--bg2);border-radius:999px;overflow:hidden}.bar>i{display:block;height:100%;background:var(--accent)}
+/* gate */
+.gate{max-width:620px;margin:0 auto;padding:34px 18px}
+.gate h1{font-size:clamp(24px,4vw,34px);margin:0 0 6px;text-align:center}
+.gate .sub{text-align:center;color:var(--dim);margin:0 0 24px;font-size:14px}
+.roles{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:18px}
+@media(max-width:640px){.roles{grid-template-columns:1fr}}
+.role{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px;cursor:pointer;text-align:center}
+.role:hover{border-color:var(--accent)}
+.role.on{border-color:var(--accent);background:var(--card2);box-shadow:0 0 0 2px rgba(79,140,255,.25) inset}
+.role .i{font-size:24px}.role .n{font-weight:800;margin-top:6px;font-size:15px}.role .d{font-size:11.5px;color:var(--dim);margin-top:3px;line-height:1.4}
+.gate .fields{display:flex;flex-direction:column;gap:12px}
+code.k{background:var(--bg2);padding:2px 6px;border-radius:5px;font-family:var(--mono);font-size:12px;color:#a9c8ff;word-break:break-all}
+kbd{background:var(--bg2);border:1px solid var(--line);border-bottom-width:2px;border-radius:5px;padding:1px 6px;font-family:var(--mono);font-size:11.5px}
+</style>
+</head>
+<body>
+
+<!-- ══════════════════ GATE ══════════════════ -->
+<div id="gate" class="gate">
+  <div class="row" style="justify-content:flex-end;margin-bottom:14px"><div id="gLang"></div></div>
+  <h1><span data-t="event"></span></h1>
+  <p class="sub"><span data-t="challenge"></span> · <span data-t="hubTitle"></span></p>
+
+  <div class="roles" id="roles"></div>
+
+  <div class="card">
+    <div class="fields">
+      <label class="fld"><span data-t="yourName"></span><input type="text" id="gName" data-t-ph="yourName"></label>
+      <label class="fld"><span data-t="dbUrl"></span><input type="text" id="gDb" placeholder="https://xxxx-default-rtdb.asia-southeast1.firebasedatabase.app"></label>
+      <label class="fld"><span data-t="roomCode"></span><input type="text" id="gRoom" placeholder="ROBOSOCCER-OSAKA-2026"></label>
+      <label class="fld" id="gPinWrap"><span data-t="adminPin"></span><input type="password" id="gPin"></label>
+      <label class="fld" id="gFieldWrap"><span data-t="myField"></span>
+        <select id="gField"><option value="" data-t="allFields"></option><option value="A">A — ES</option><option value="B">B — MS</option><option value="C">C — HS</option><option value="D">D — ES</option></select>
+      </label>
+      <div class="row">
+        <button class="btn" id="gTest" data-t="testConn"></button>
+        <button class="btn primary" id="gGo" data-t="enter"></button>
+        <div class="spacer"></div>
+        <button class="btn ghost tiny" id="gOffline" data-t="offlineMode"></button>
+      </div>
+      <p id="gMsg" class="tiny muted" style="margin:0"></p>
+    </div>
+  </div>
+
+  <p class="tiny muted center" style="margin-top:18px" data-t="gateHint"></p>
+</div>
+
+<!-- ══════════════════ APP ══════════════════ -->
+<div id="app" class="hidden">
+  <header class="topbar" id="topbar">
+    <div class="brand"><b data-t="event"></b><span data-t="challenge"></span></div>
+    <div class="tabs" id="tabs"></div>
+    <div class="spacer"></div>
+    <span class="conn" id="conn"></span>
+    <span class="tiny muted" id="whoami"></span>
+    <div id="langbar"></div>
+    <button class="btn ghost" id="btnLeave" title="exit">⏻</button>
+  </header>
+  <div id="view"></div>
+</div>
+
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
+<script>
+const TEAM_ROWS = [["SRE14","FLC","Taiwan","PAN, MING-JU","ES","T171"],["SRE13","LSFC Dinos","Korea","JANG UKYONG","ES","T035"],["SRE11","LSFC Tigers","Korea","JANG UKYONG","ES","T036"],["SRE03","LSFC Dragons","Korea","JANG UKYONG","ES","T037"],["SRE01","LSFC Bears","Korea","JANG UKYONG","ES","T038"],["SRE02","GPFC A","Korea","LEE BOHYUN","ES","T049"],["SRE12","GPFC B","Korea","LEE BOHYUN","ES","T050"],["SRE04","Soccer Master","Taiwan","CHUANG, SHENG-WEN","ES","T181"],["SRE05","QQ3","Taiwan","HO MINGLIANG","ES","T184"],["SRE08","QQ4","Taiwan","HO MINGLIANG","ES","T185"],["SRE09","Dragon","Taiwan","HSUEH, YU-YIN","ES","T203"],["SRE10","Apex-X","Taiwan","LIN TING-YAN","ES","T204"],["SRE06","Atlas Junior","Bangladesh","Sunny Jubayer","ES","T268"],["SRE07","Mo-Salah","Egypt","Taghrid Aly","ES","T277"],["SRH01","ALL IS WELL","Taiwan","WENG, CHENG-HSIAO","HS","T190"],["SRH02","DMAXS-MX","Mexico","","HS","T143"],["SRH03","Hello","Thailand","Chaiwat Pornwattananukool","HS","T111"],["SRH04","Made in R4K","Thailand","Chaiwat Pornwattananukool","HS","T110"],["SRH05","R4K United","Thailand","Chaiwat Pornwattananukool","HS","T114"],["SRH06","Warriors","Taiwan","LIAO, CHIEN-CHIH","HS","T207"],["SRH07","Egypt 2","Egypt","MIRETTE SAMY ABDRABO NAZER","HS","T280"],["SRM07","LSFC Eagles","Korea","JANG UKYONG","MS","T039"],["SRM11","GPFC C","Korea","LEE BOHYUN","MS","T051"],["SRM09","GPFC D","Korea","LEE BOHYUN","MS","T052"],["SRM10","GPFC E","Korea","LEE BOHYUN","MS","T053"],["SRM12","The Accidental Geniuses 01","Taiwan","WENG, CHENG-HSIAO","MS","T191"],["SRM06","The Accidental Geniuses 02","Taiwan","WENG, CHENG-HSIAO","MS","T192"],["SRM04","Running Boyz","Taiwan","WANG, YI-TANG","MS","T196"],["SRM08","Hacker","Taiwan","LIAO, CHIEN-CHIH","MS","T208"],["SRM03","BAYMAX6","Egypt","mohamed hany","MS","T273"],["SRM01","roboheros","Egypt","mohamed tarek","MS","T274"],["SRM05","The Egyptian Pharos","Egypt","Mohamed Abdelhamid Aboelnaga","MS","T276"]];
+const SCHED_ROWS = [["M001","11","13:00","A","L","SRE09","SRE11",""],["M002","11","13:00","B","L","SRM01","SRM12",""],["M003","11","13:00","C","L","SRH01","SRH02",""],["M004","11","13:06","A","L","SRE01","SRE12",""],["M005","11","13:06","B","L","SRM03","SRM04",""],["M006","11","13:12","A","L","SRE06","SRE08",""],["M007","11","13:12","C","L","SRH03","SRH05",""],["M008","11","13:18","A","L","SRE03","SRE04",""],["M009","11","13:18","B","L","SRM06","SRM08",""],["M010","11","13:24","A","L","SRE10","SRE13",""],["M011","11","13:24","B","L","SRM10","SRM11",""],["M012","11","13:24","C","L","SRH04","SRH07",""],["M013","11","13:30","A","L","SRE05","SRE07",""],["M014","11","13:36","B","L","SRM09","SRM12",""],["M015","11","13:42","A","L","SRE02","SRE14",""],["M016","11","13:42","B","L","SRM03","SRM05",""],["M017","11","13:42","C","L","SRH01","SRH06",""],["M018","11","13:48","A","L","SRE09","SRE12",""],["M019","11","13:54","A","L","SRE03","SRE06",""],["M020","11","13:54","B","L","SRM06","SRM07",""],["M021","11","13:54","C","L","SRH02","SRH03",""],["M022","11","14:00","A","L","SRE08","SRE10",""],["M023","11","14:00","B","L","SRM01","SRM10",""],["M024","11","14:06","A","L","SRE11","SRE13",""],["M025","11","14:06","C","L","SRH05","SRH07",""],["M026","11","14:12","B","L","SRM04","SRM12",""],["M027","11","14:18","A","L","SRE04","SRE05",""],["M028","11","14:18","B","L","SRM09","SRM11",""],["M029","11","14:24","A","L","SRE01","SRE02",""],["M030","11","14:24","C","L","SRH04","SRH06",""],["M031","11","14:30","A","L","SRE06","SRE07",""],["M032","11","14:30","B","L","SRM03","SRM06",""],["M033","11","14:36","A","L","SRE12","SRE14",""],["M034","11","14:36","B","L","SRM08","SRM10",""],["M035","11","14:36","C","L","SRH01","SRH05",""],["M036","11","14:42","A","L","SRE08","SRE09",""],["M037","11","14:48","B","L","SRM04","SRM05",""],["M038","11","14:54","A","L","SRE10","SRE11",""],["M039","11","14:54","B","L","SRM07","SRM09",""],["M040","11","14:54","C","L","SRH02","SRH06",""],["M041","11","15:00","A","L","SRE03","SRE05",""],["M042","11","15:06","A","L","SRE04","SRE07",""],["M043","11","15:06","B","L","SRM01","SRM11",""],["M044","11","15:06","C","L","SRH01","SRH07",""],["M045","11","15:12","A","L","SRE02","SRE13",""],["M046","11","15:12","B","L","SRM03","SRM12",""],["M047","11","15:18","A","L","SRE01","SRE14",""],["M048","11","15:18","C","L","SRH03","SRH04",""],["M049","11","15:24","B","L","SRM05","SRM06",""],["M050","11","15:30","A","L","SRE11","SRE12",""],["M051","11","15:30","B","L","SRM07","SRM08",""],["M052","11","15:36","A","L","SRE09","SRE10",""],["M053","11","15:36","C","L","SRH02","SRH05",""],["M054","11","15:42","A","L","SRE07","SRE08",""],["M055","11","15:42","B","L","SRM09","SRM10",""],["M056","11","15:48","A","L","SRE04","SRE06",""],["M057","11","15:48","B","L","SRM01","SRM04",""],["M058","11","15:48","C","L","SRH06","SRH07",""],["M059","11","15:54","A","L","SRE03","SRE14",""],["M060","12","10:00","A","L","SRE01","SRE13",""],["M066","12","10:00","B","L","SRM07","SRM10","10:18"],["M062","12","10:00","C","L","SRH01","SRH04",""],["M070","12","10:00","D","L","SRE08","SRE11","A 10:30"],["M064","12","10:06","A","L","SRE02","SRE05","10:12"],["M061","12","10:06","B","L","SRM11","SRM12","10:00"],["M067","12","10:06","C","L","SRH03","SRH07","10:18"],["M065","12","10:06","D","L","SRE10","SRE12","A 10:18"],["M072","12","10:12","A","L","SRE13","SRE14","10:36"],["M078","12","10:12","B","L","SRM05","SRM07","10:54"],["M071","12","10:12","C","L","SRH04","SRH05","10:30"],["M077","12","10:12","D","L","SRE01","SRE03","A 10:54"],["M068","12","10:18","A","L","SRE07","SRE09","10:24"],["M069","12","10:18","B","L","SRM06","SRM09","10:24"],["M076","12","10:18","C","L","SRH03","SRH06","10:48"],["M075","12","10:18","D","L","SRE05","SRE06","A 10:48"],["M083","12","10:24","A","L","SRE12","SRE13","11:12"],["M096","12","10:24","B","L","SRM04","SRM07","11:48"],["M081","12","10:24","C","L","SRH02","SRH07","11:00"],["M087","12","10:24","D","L","SRE11","SRE14","A 11:24"],["M093","12","10:30","A","L","SRE02","SRE03","11:42"],["M063","12","10:30","B","L","SRM05","SRM08","10:06"],["M085","12","10:30","C","L","SRH01","SRH03","11:12"],["M095","12","10:30","D","L","SRE01","SRE04","A 11:48"],["M082","12","10:36","A","L","SRE07","SRE10","11:06"],["M073","12","10:36","B","L","SRM01","SRM03",""],["M090","12","10:36","C","L","SRH05","SRH06","11:30"],["M088","12","10:36","D","L","SRE06","SRE09","A 11:30"],["M079","12","10:42","A","L","SRE02","SRE04","11:00"],["M074","12","10:42","B","L","SRM08","SRM11",""],["M094","12","10:42","C","L","SRH02","SRH04","11:42"],["M091","12","10:42","D","L","SRE05","SRE08","A 11:36"],["M080","12","10:48","B","L","SRM04","SRM06","11:00"],["M084","12","10:54","B","L","SRM10","SRM12","11:12"],["M086","12","11:00","B","L","SRM08","SRM09","11:18"],["M089","12","11:06","B","L","SRM03","SRM11","11:30"],["M092","12","11:12","B","L","SRM01","SRM05","11:36"],["M097","12","13:00","A","S","SRES2","SRES3",""],["M098","12","13:06","A","S","SRES1","SRES4",""],["M099","12","13:12","B","S","SRMS2","SRMS3",""],["M100","12","13:18","B","S","SRMS1","SRMS4",""],["M101","12","13:42","C","T","SREF3","SREF4",""],["M102","12","13:48","C","T","SRMF3","SRMF4",""],["M103","12","14:06","A","F","SRHF1","SRHF2",""],["M104","12","14:18","B","F","SREF1","SREF2",""],["M105","12","14:30","C","F","SRMF1","SRMF2",""]];
+const PRELOAD = [["M001",2,0],["M002",2,6],["M003",0,8],["M004",1,5],["M011",3,5],["M005",0,5],["M006",0,1],["M010",4,0],["M016",1,2],["M012",10,1],["M015",4,6],["M007",4,4],["M013",4,2]];
+
+</script>
+<script>
+const LANGS = [
+  { code: 'en', short: 'EN', label: 'English' },
+  { code: 'ja', short: 'JA', label: '日本語' },
+  { code: 'zh-TW', short: '繁中', label: '繁體中文' },
+  { code: 'ko', short: 'KO', label: '한국어' },
+];
+
+const I18N = {
+en: {
+  event: 'RoboRAVE Osaka 2026', challenge: 'SoccerBot Remote', hubTitle: 'Match Control',
+  roleAdmin: 'Admin', roleAdminD: 'Schedule, standings, play-offs, export',
+  roleJudge: 'Judge', roleJudgeD: 'Timer, goals, submit results',
+  roleScreen: 'Scoreboard', roleScreenD: 'Read-only display for spectators',
+  yourName: 'Your name', dbUrl: 'Firebase DB URL', roomCode: 'Event code', adminPin: 'Admin PIN',
+  myField: 'My field', allFields: 'All fields', testConn: 'Test connection', enter: 'Enter',
+  offlineMode: '💾 Offline standalone mode',
+  gateHint: 'The judge link already carries the DB URL and event code — just type your name and enter.',
+  connOk: '✅ Connection OK', connFail: '❌ Cannot connect — check the URL', needFields: 'Please fill in every field',
+  badPin: 'Wrong admin PIN', offlineOn: 'Offline mode — this device only, saved in the browser',
+  connected: 'Connected', disconnected: 'Reconnecting…', queued: 'offline (%n queued)',
+  tabJudge: 'Judge', tabScreen: 'Scoreboard', tabStandings: 'Standings', tabSchedule: 'Schedule',
+  tabPlayoff: 'Play-offs', tabSettings: 'Settings',
+  field: 'Field', division: 'Division', day: 'Day', time: 'Time', match: 'Match', all: 'All',
+  ES: 'Elem', MS: 'Middle', HS: 'High', ESfull: 'Elementary School', MSfull: 'Middle School', HSfull: 'High School',
+  selectMatch: 'Select a match', noMatch: 'No match selected', home: 'Home', away: 'Away',
+  firstHalf: '1st Half', secondHalf: '2nd Half', start: 'START', pause: 'PAUSE', resume: 'RESUME',
+  nextHalf: 'Next half', resetTimer: 'Reset timer', goal: 'GOAL', undo: 'Undo',
+  submit: 'Submit result', submitConfirm: 'Submit this result?', submitted: 'Result submitted',
+  note: 'Note (optional)', judgeName: 'Judge', reopen: 'Reopen', reopenConfirm: 'Reopen this finished match?',
+  finished: 'FINISHED', live: 'LIVE', scheduled: 'Scheduled', pending: 'Pending', done: 'Done',
+  draw: 'Draw', winner: 'Winner', mercy: 'Mercy rule — 5 goals reached', tbd: 'TBD',
+  knockoutNoDraw: 'A knock-out match cannot end in a draw.',
+  nextUp: 'Coming up', standings: 'Standings', rank: '#', team: 'Team', country: 'Country', mentor: 'Mentor',
+  P: 'P', W: 'W', D: 'D', L: 'L', GF: 'GF', GA: 'GA', GD: 'GD', Pts: 'Pts',
+  league: 'League', semi: 'Semi-final', final: 'Final', third: '3rd place', playoffs: 'Play-offs',
+  first: '1st place', second: '2nd place', thirdPlace: '3rd place',
+  exportCsv: 'Results CSV', exportStandings: 'Standings CSV', backup: 'Backup (JSON)',
+  resetAll: 'Reset all results', resetWarn: 'This erases every score. Type RESET to confirm.',
+  loadToday: 'Load today’s played results', loadTodayD: 'Writes the 13 matches already played on 08-11.',
+  leagueOnly: 'League only', leagueOnlyNote: 'LSFC teams play the league only and are skipped when seeding the play-offs.',
+  leagueIncomplete: 'League not finished — seeds appear automatically once it is.',
+  seedNote: 'Seeded for the play-offs', moved: 'moved', wasAt: 'was %s',
+  judgeLink: 'Judge link', screenLink: 'Scoreboard link', adminLink: 'Admin link', copy: 'Copy', copied: 'Copied',
+  progress: 'Progress', of: 'of', storage: 'Mode', online: 'Firebase (online)', offline: 'Offline (this device)',
+  activity: 'Activity log', people: 'Connected', searchTeam: 'Search team…',
+  rule1: 'First half 90 s · Second half 90 s', rule2: 'First to 5 goals wins immediately',
+  rule3: 'Win 3 · Draw 1 · Loss 0 — goal difference counts max 5 goals per match',
+  scoreEdit: 'Edit score', save: 'Save', close: 'Close', leave: 'Leave', mercyOn: '5-goal mercy rule',
+  deadlineTitle: 'LSFC — finish before 11:30', deadlineNote: 'These matches were moved earlier so every LSFC match ends before 11:30 on 08-12.',
+},
+ja: {
+  event: 'RoboRAVE 大阪 2026', challenge: 'サッカーボット リモート', hubTitle: '試合運営',
+  roleAdmin: '管理者', roleAdminD: '日程・順位表・決勝・出力',
+  roleJudge: '審判', roleJudgeD: 'タイマー・得点・結果送信',
+  roleScreen: 'スコアボード', roleScreenD: '観客向け表示（閲覧のみ）',
+  yourName: 'お名前', dbUrl: 'Firebase DB URL', roomCode: '大会コード', adminPin: '管理PIN',
+  myField: '担当フィールド', allFields: '全フィールド', testConn: '接続テスト', enter: '入る',
+  offlineMode: '💾 オフライン単独モード',
+  gateHint: '審判リンクにはDB URLと大会コードが入っています。お名前を入れて入るだけです。',
+  connOk: '✅ 接続正常', connFail: '❌ 接続できません — URLをご確認ください', needFields: 'すべて入力してください',
+  badPin: '管理PINが違います', offlineOn: 'オフラインモード — この端末のみ、ブラウザに保存',
+  connected: '接続中', disconnected: '再接続中…', queued: 'オフライン（待機 %n件）',
+  tabJudge: '審判', tabScreen: 'スコアボード', tabStandings: '順位表', tabSchedule: '日程',
+  tabPlayoff: '決勝', tabSettings: '設定',
+  field: 'フィールド', division: '部門', day: '日付', time: '時刻', match: '試合', all: '全て',
+  ES: '小学', MS: '中学', HS: '高校', ESfull: '小学生の部', MSfull: '中学生の部', HSfull: '高校生の部',
+  selectMatch: '試合を選択', noMatch: '試合が未選択です', home: 'ホーム', away: 'アウェイ',
+  firstHalf: '前半', secondHalf: '後半', start: 'スタート', pause: '一時停止', resume: '再開',
+  nextHalf: '後半へ', resetTimer: 'タイマーリセット', goal: 'ゴール', undo: '取消',
+  submit: '結果を送信', submitConfirm: 'この結果を送信しますか？', submitted: '結果を送信しました',
+  note: 'メモ（任意）', judgeName: '審判', reopen: '再開放', reopenConfirm: '終了した試合を再開放しますか？',
+  finished: '終了', live: '進行中', scheduled: '予定', pending: '未実施', done: '完了',
+  draw: '引分', winner: '勝者', mercy: 'コールド勝ち — 5点到達', tbd: '未定',
+  knockoutNoDraw: '決勝トーナメントは引分にできません。',
+  nextUp: '次の試合', standings: '順位表', rank: '順', team: 'チーム', country: '国', mentor: 'メンター',
+  P: '試', W: '勝', D: '分', L: '負', GF: '得点', GA: '失点', GD: '得失', Pts: '勝点',
+  league: 'リーグ戦', semi: '準決勝', final: '決勝', third: '3位決定戦', playoffs: '決勝トーナメント',
+  first: '優勝', second: '準優勝', thirdPlace: '第3位',
+  exportCsv: '結果CSV', exportStandings: '順位表CSV', backup: 'バックアップ(JSON)',
+  resetAll: '全結果をリセット', resetWarn: '全てのスコアが消去されます。RESET と入力してください。',
+  loadToday: '本日の実施済み結果を取込', loadTodayD: '08-11に実施済みの13試合を書き込みます。',
+  leagueOnly: 'リーグ戦のみ', leagueOnlyNote: 'LSFCの各チームはリーグ戦のみ参加し、決勝シードからは除外されます。',
+  leagueIncomplete: 'リーグ戦が未完了です。完了後に自動でシードが表示されます。',
+  seedNote: '決勝進出シード', moved: '変更', wasAt: '元 %s',
+  judgeLink: '審判リンク', screenLink: 'スコアボードリンク', adminLink: '管理リンク', copy: 'コピー', copied: 'コピーしました',
+  progress: '進捗', of: '/', storage: 'モード', online: 'Firebase（オンライン）', offline: 'オフライン（この端末）',
+  activity: '操作ログ', people: '接続中', searchTeam: 'チーム検索…',
+  rule1: '前半90秒・後半90秒', rule2: '先に5点で即勝利',
+  rule3: '勝3・分1・負0 — 得失点は1試合最大5点まで算入',
+  scoreEdit: 'スコア修正', save: '保存', close: '閉じる', leave: '退出', mercyOn: '5点コールド適用',
+  deadlineTitle: 'LSFC — 11:30までに終了', deadlineNote: '08-12のLSFC全試合が11:30前に終わるよう、以下の試合を繰り上げました。',
+},
+'zh-TW': {
+  event: 'RoboRAVE 大阪 2026', challenge: '足球機器人 遠距賽', hubTitle: '賽事控制',
+  roleAdmin: '管理', roleAdminD: '賽程、積分榜、決賽、匯出',
+  roleJudge: '裁判', roleJudgeD: '計時、得分、送出結果',
+  roleScreen: '計分板', roleScreenD: '觀眾顯示（唯讀）',
+  yourName: '您的姓名', dbUrl: 'Firebase DB URL', roomCode: '賽事代碼', adminPin: '管理 PIN',
+  myField: '負責場地', allFields: '所有場地', testConn: '測試連線', enter: '進入',
+  offlineMode: '💾 離線單機模式',
+  gateHint: '裁判連結已含 DB URL 與賽事代碼，輸入姓名即可進入。',
+  connOk: '✅ 連線正常', connFail: '❌ 無法連線 — 請檢查網址', needFields: '請填寫所有欄位',
+  badPin: '管理 PIN 錯誤', offlineOn: '離線模式 — 僅此裝置，存於瀏覽器',
+  connected: '已連線', disconnected: '重新連線中…', queued: '離線（待傳 %n 筆）',
+  tabJudge: '裁判', tabScreen: '計分板', tabStandings: '積分榜', tabSchedule: '賽程',
+  tabPlayoff: '決賽', tabSettings: '設定',
+  field: '場地', division: '組別', day: '日期', time: '時間', match: '比賽', all: '全部',
+  ES: '國小', MS: '國中', HS: '高中', ESfull: '國小組', MSfull: '國中組', HSfull: '高中組',
+  selectMatch: '選擇比賽', noMatch: '尚未選擇比賽', home: '主隊', away: '客隊',
+  firstHalf: '上半場', secondHalf: '下半場', start: '開始', pause: '暫停', resume: '繼續',
+  nextHalf: '進入下半場', resetTimer: '重設計時', goal: '得分', undo: '取消',
+  submit: '送出結果', submitConfirm: '確定送出此結果嗎？', submitted: '結果已送出',
+  note: '備註（選填）', judgeName: '裁判', reopen: '重新開放', reopenConfirm: '要重新開放已結束的比賽嗎？',
+  finished: '已結束', live: '進行中', scheduled: '未開始', pending: '未完成', done: '已完成',
+  draw: '平手', winner: '勝隊', mercy: '提前結束 — 已達 5 分', tbd: '待定',
+  knockoutNoDraw: '淘汰賽不可平手作收。',
+  nextUp: '接下來', standings: '積分榜', rank: '名次', team: '隊伍', country: '國家', mentor: '指導老師',
+  P: '賽', W: '勝', D: '和', L: '負', GF: '得分', GA: '失分', GD: '淨勝', Pts: '積分',
+  league: '循環賽', semi: '準決賽', final: '決賽', third: '季軍賽', playoffs: '決賽階段',
+  first: '冠軍', second: '亞軍', thirdPlace: '季軍',
+  exportCsv: '結果 CSV', exportStandings: '積分榜 CSV', backup: '備份 (JSON)',
+  resetAll: '重設所有結果', resetWarn: '將清除所有比分。請輸入 RESET 確認。',
+  loadToday: '匯入今日已賽結果', loadTodayD: '寫入 08-11 已完成的 13 場比賽。',
+  leagueOnly: '僅循環賽', leagueOnlyNote: 'LSFC 各隊僅參加循環賽，排種子時會跳過。',
+  leagueIncomplete: '循環賽尚未結束，完成後自動產生種子。',
+  seedNote: '晉級種子', moved: '已調整', wasAt: '原 %s',
+  judgeLink: '裁判連結', screenLink: '計分板連結', adminLink: '管理連結', copy: '複製', copied: '已複製',
+  progress: '進度', of: '/', storage: '模式', online: 'Firebase（線上）', offline: '離線（本機）',
+  activity: '操作紀錄', people: '連線中', searchTeam: '搜尋隊伍…',
+  rule1: '上半場 90 秒・下半場 90 秒', rule2: '率先取得 5 分立即獲勝',
+  rule3: '勝 3・和 1・負 0 — 淨勝球每場最多計 5 球',
+  scoreEdit: '修改比分', save: '儲存', close: '關閉', leave: '離開', mercyOn: '套用 5 分提前結束',
+  deadlineTitle: 'LSFC — 11:30 前結束', deadlineNote: '為使 08-12 所有 LSFC 比賽於 11:30 前結束，已將下列比賽提前。',
+},
+ko: {
+  event: '로보레이브 오사카 2026', challenge: '사커봇 리모트', hubTitle: '경기 운영',
+  roleAdmin: '관리자', roleAdminD: '일정 · 순위표 · 결승 · 내보내기',
+  roleJudge: '심사위원', roleJudgeD: '타이머 · 득점 · 결과 전송',
+  roleScreen: '스코어보드', roleScreenD: '관중용 화면 (보기 전용)',
+  yourName: '이름', dbUrl: 'Firebase DB URL', roomCode: '대회 코드', adminPin: '관리자 PIN',
+  myField: '담당 필드', allFields: '전체 필드', testConn: '연결 테스트', enter: '접속하기',
+  offlineMode: '💾 오프라인 단독 모드',
+  gateHint: '심사위원 링크에는 DB 주소와 대회 코드가 들어 있습니다. 이름만 입력하고 접속하세요.',
+  connOk: '✅ 연결 정상', connFail: '❌ 연결할 수 없습니다 — 주소를 확인하세요', needFields: '모든 항목을 입력하세요',
+  badPin: '관리자 PIN이 틀립니다', offlineOn: '오프라인 모드 — 이 기기에만 저장됩니다',
+  connected: '연결됨', disconnected: '재연결 중…', queued: '연결 끊김 (대기 %n건)',
+  tabJudge: '심사위원', tabScreen: '스코어보드', tabStandings: '순위표', tabSchedule: '경기 일정',
+  tabPlayoff: '결승 토너먼트', tabSettings: '설정',
+  field: '필드', division: '부문', day: '날짜', time: '시각', match: '경기', all: '전체',
+  ES: '초등', MS: '중등', HS: '고등', ESfull: '초등부', MSfull: '중등부', HSfull: '고등부',
+  selectMatch: '경기 선택', noMatch: '선택된 경기가 없습니다', home: '홈', away: '어웨이',
+  firstHalf: '전반', secondHalf: '후반', start: '시작', pause: '일시정지', resume: '재개',
+  nextHalf: '후반 시작', resetTimer: '타이머 초기화', goal: '득점', undo: '취소',
+  submit: '결과 전송', submitConfirm: '이 결과를 전송할까요?', submitted: '결과가 전송되었습니다',
+  note: '비고 (선택)', judgeName: '심사위원', reopen: '재개방', reopenConfirm: '종료된 경기를 다시 열까요?',
+  finished: '종료', live: '진행 중', scheduled: '예정', pending: '미진행', done: '완료',
+  draw: '무승부', winner: '승자', mercy: '콜드게임 — 5점 도달', tbd: '미정',
+  knockoutNoDraw: '토너먼트 경기는 무승부로 끝낼 수 없습니다.',
+  nextUp: '다음 경기', standings: '순위표', rank: '순위', team: '팀', country: '국가', mentor: '멘토',
+  P: '경기', W: '승', D: '무', L: '패', GF: '득점', GA: '실점', GD: '골득실', Pts: '승점',
+  league: '리그전', semi: '준결승', final: '결승', third: '3·4위전', playoffs: '결승 토너먼트',
+  first: '1위', second: '2위', thirdPlace: '3위',
+  exportCsv: '결과 CSV', exportStandings: '순위표 CSV', backup: '전체 백업 (JSON)',
+  resetAll: '전체 결과 초기화', resetWarn: '모든 점수가 삭제됩니다. RESET 을 입력해 확인하세요.',
+  loadToday: '오늘 진행된 결과 불러오기', loadTodayD: '08-11에 이미 진행된 13경기를 서버에 기록합니다.',
+  leagueOnly: '리그전만', leagueOnlyNote: 'LSFC 팀은 리그전만 참가하며, 결승 시드 배정 시 건너뜁니다.',
+  leagueIncomplete: '리그전이 끝나지 않았습니다. 완료되면 시드가 자동 표시됩니다.',
+  seedNote: '결승 진출 시드', moved: '일정 변경', wasAt: '원래 %s',
+  judgeLink: '심사위원 링크', screenLink: '스코어보드 링크', adminLink: '관리자 링크', copy: '복사', copied: '복사됨',
+  progress: '진행률', of: '/', storage: '모드', online: 'Firebase (온라인)', offline: '오프라인 (이 기기)',
+  activity: '활동 기록', people: '접속자', searchTeam: '팀 검색…',
+  rule1: '전반 90초 · 후반 90초', rule2: '먼저 5점 득점 시 즉시 종료',
+  rule3: '승 3 · 무 1 · 패 0 — 골득실은 한 경기 최대 5골까지 인정',
+  scoreEdit: '점수 수정', save: '저장', close: '닫기', leave: '나가기', mercyOn: '5점 콜드게임 적용',
+  deadlineTitle: 'LSFC — 11:30 전 종료', deadlineNote: '08-12 LSFC 경기가 모두 11:30 전에 끝나도록 아래 경기를 앞당겼습니다.',
+},
+};
+
+</script>
+<script>
+'use strict';
+/* ═══════════════ RoboRAVE Osaka 2026 · SoccerBot Remote — online match control ═══════════════ */
+
+const RULES = { halfSec: 90, halves: 2, mercy: 5, gdCap: 5, win: 3, draw: 1, loss: 0 };
+const ROOT = 'soccerremote26';
+const HALF_MS = RULES.halfSec * 1000;
+const FIELD_DIV = { A: 'ES', B: 'MS', C: 'HS', D: 'ES' };
+
+// ── static data ──────────────────────────────────────────────────────────────
+const TEAMS = TEAM_ROWS.map(r => ({ id: r[0], name: r[1], country: r[2], mentor: r[3], division: r[4], no: r[5] }));
+const TM = {}; TEAMS.forEach(t => TM[t.id] = t);
+const STAGE = { L: 'league', S: 'semi', F: 'final', T: 'third' };
+const MATCHES = SCHED_ROWS.map(r => ({
+  id: r[0], date: '2026-08-' + r[1], time: r[2], field: r[3], stage: STAGE[r[4]],
+  hr: r[5], ar: r[6], wasAt: r[7] || null,
+  division: r[5].startsWith('SRE') ? 'ES' : r[5].startsWith('SRM') ? 'MS' : 'HS',
+}));
+const MX = {}; MATCHES.forEach(m => MX[m.id] = m);
+const LEAGUE_ONLY = new Set(TEAMS.filter(t => /^LSFC/.test(t.name)).map(t => t.id));
+const REAL = id => /^SR[EMH]\d\d$/.test(id);
+
+const PH = {
+  SRES1: ['seed', 'ES', 1], SRES2: ['seed', 'ES', 2], SRES3: ['seed', 'ES', 3], SRES4: ['seed', 'ES', 4],
+  SRMS1: ['seed', 'MS', 1], SRMS2: ['seed', 'MS', 2], SRMS3: ['seed', 'MS', 3], SRMS4: ['seed', 'MS', 4],
+  SRHF1: ['seed', 'HS', 1], SRHF2: ['seed', 'HS', 2],
+  SREF1: ['w', 'SRES1', 'SRES4'], SREF2: ['w', 'SRES2', 'SRES3'],
+  SREF3: ['l', 'SRES2', 'SRES3'], SREF4: ['l', 'SRES1', 'SRES4'],
+  SRMF1: ['w', 'SRMS1', 'SRMS4'], SRMF2: ['w', 'SRMS2', 'SRMS3'],
+  SRMF3: ['l', 'SRMS2', 'SRMS3'], SRMF4: ['l', 'SRMS1', 'SRMS4'],
+};
+
+// ── i18n ─────────────────────────────────────────────────────────────────────
+let lang = localStorage.getItem('rr26o.lang') ||
+  (/^ko/.test(navigator.language) ? 'ko' : /^ja/.test(navigator.language) ? 'ja' :
+   /^zh/.test(navigator.language) ? 'zh-TW' : 'en');
+const T = k => (I18N[lang] && I18N[lang][k] != null) ? I18N[lang][k] : (I18N.en[k] != null ? I18N.en[k] : k);
+function setLang(c) {
+  lang = c; localStorage.setItem('rr26o.lang', c); document.documentElement.lang = c;
+  applyStatic(); render();
+}
+function applyStatic() {
+  document.querySelectorAll('[data-t]').forEach(e => e.textContent = T(e.getAttribute('data-t')));
+  document.querySelectorAll('[data-t-ph]').forEach(e => e.placeholder = T(e.getAttribute('data-t-ph')));
+  document.querySelectorAll('.langbar button').forEach(b => b.classList.toggle('on', b.dataset.lang === lang));
+  document.title = T('event') + ' · ' + T('challenge');
+}
+function mountLang(host) {
+  host.className = 'langbar'; host.innerHTML = '';
+  LANGS.forEach(L => {
+    const b = document.createElement('button');
+    b.textContent = L.short; b.title = L.label; b.dataset.lang = L.code;
+    b.onclick = () => setLang(L.code);
+    host.appendChild(b);
+  });
+}
+
+// ── helpers ──────────────────────────────────────────────────────────────────
+const $ = s => document.querySelector(s);
+const esc = x => String(x == null ? '' : x).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+const fmt = ms => { ms = Math.max(0, ms); const s = Math.floor(ms / 1000), cs = Math.floor(ms % 1000 / 100); return Math.floor(s / 60) + ':' + String(s % 60).padStart(2, '0') + '.' + cs; };
+function toast(msg, kind) {
+  const d = document.createElement('div'); d.className = 'toast' + (kind ? ' ' + kind : ''); d.textContent = msg;
+  document.body.appendChild(d); setTimeout(() => d.remove(), kind === 'err' ? 4200 : 2300);
+}
+function download(name, text, mime) {
+  const b = new Blob(['﻿' + text], { type: (mime || 'text/csv') + ';charset=utf-8' });
+  const a = document.createElement('a'); a.href = URL.createObjectURL(b); a.download = name;
+  document.body.appendChild(a); a.click(); setTimeout(() => { URL.revokeObjectURL(a.href); a.remove(); }, 500);
+}
+const csvCell = v => { const s = v == null ? '' : String(v); return /[",\n]/.test(s) ? '"' + s.replace(/"/g, '""') + '"' : s; };
+
+// ── store (Firebase | offline) ───────────────────────────────────────────────
+const Store = {
+  mode: 'fb', room: '', dbUrl: '', ref: null, offset: 0, connected: false,
+  data: { m: {}, sched: {}, log: {}, settings: {} }, cb: null, pending: 0,
+
+  now() { return Date.now() + this.offset; },
+
+  async initFirebase(dbUrl, room) {
+    if (typeof firebase === 'undefined') throw new Error('Firebase SDK not loaded (no internet?)');
+    this.mode = 'fb'; this.dbUrl = dbUrl; this.room = room;
+    if (!firebase.apps.length) firebase.initializeApp({ databaseURL: dbUrl });
+    const db = firebase.database();
+    this.ref = db.ref(ROOT + '/' + room);
+    db.ref('.info/serverTimeOffset').on('value', s => { this.offset = s.val() || 0; });
+    db.ref('.info/connected').on('value', s => { this.connected = !!s.val(); paintConn(); });
+    await new Promise((res, rej) => {
+      const to = setTimeout(() => rej(new Error('timeout')), 12000);
+      this.ref.on('value', snap => {
+        clearTimeout(to);
+        const v = snap.val() || {};
+        this.data = { m: v.m || {}, sched: v.sched || {}, log: v.log || {}, settings: v.settings || {} };
+        if (this.cb) this.cb();
+        res();
+      }, e => { clearTimeout(to); rej(e); });
+    });
+  },
+
+  initLocal(room) {
+    this.mode = 'local'; this.room = room || 'offline'; this.connected = true;
+    try { this.data = JSON.parse(localStorage.getItem('rr26o.data') || '') || {}; } catch (e) { }
+    this.data = Object.assign({ m: {}, sched: {}, log: {}, settings: {} }, this.data);
+  },
+
+  _saveLocal() { localStorage.setItem('rr26o.data', JSON.stringify(this.data)); },
+
+  update(path, obj) {
+    // path like 'm/M001'
+    const parts = path.split('/');
+    let node = this.data;
+    for (let i = 0; i < parts.length; i++) {
+      if (i === parts.length - 1) { node[parts[i]] = Object.assign({}, node[parts[i]], obj); }
+      else { node[parts[i]] = node[parts[i]] || {}; node = node[parts[i]]; }
+    }
+    if (this.mode === 'local') { this._saveLocal(); if (this.cb) this.cb(); return Promise.resolve(); }
+    this.pending++; paintConn();
+    return this.ref.child(path).update(obj)
+      .then(() => { this.pending--; paintConn(); })
+      .catch(e => { this.pending--; paintConn(); toast(String(e.message || e), 'err'); });
+  },
+
+  set(path, val) {
+    const parts = path.split('/'); let node = this.data;
+    for (let i = 0; i < parts.length - 1; i++) { node[parts[i]] = node[parts[i]] || {}; node = node[parts[i]]; }
+    node[parts[parts.length - 1]] = val;
+    if (this.mode === 'local') { this._saveLocal(); if (this.cb) this.cb(); return Promise.resolve(); }
+    return this.ref.child(path).set(val);
+  },
+
+  log(mid, action, detail) {
+    const row = { ts: new Date().toISOString(), m: mid || '', a: action, d: detail == null ? '' : String(detail), u: ME.name || '' };
+    if (this.mode === 'local') {
+      const k = 'L' + Date.now() + Math.floor(Math.random() * 1000);
+      this.data.log[k] = row; this._saveLocal(); return;
+    }
+    this.ref.child('log').push(row);
+  },
+};
+
+// ── mutable match record ─────────────────────────────────────────────────────
+function rec(id) {
+  const r = Store.data.m[id] || {};
+  return {
+    hs: r.hs || 0, as: r.as || 0, st: r.st || 'S', w: r.w || null, j: r.j || '', nt: r.nt || '',
+    pr: r.pr || 1, rn: !!r.rn, en: r.en || null, rm: r.rm == null ? HALF_MS : r.rm,
+    sb: r.sb || '', hid: r.hid || null, aid: r.aid || null,
+  };
+}
+function slotTime(m) { const o = Store.data.sched[m.id]; return o && o.t ? o.t : m.time; }
+function slotDate(m) { const o = Store.data.sched[m.id]; return o && o.d ? '2026-08-' + o.d : m.date; }
+function ordered() {
+  return MATCHES.slice().sort((a, b) =>
+    (slotDate(a) + slotTime(a)).localeCompare(slotDate(b) + slotTime(b)) || a.field.localeCompare(b.field));
+}
+function remainOf(r) { return r.rn && r.en ? Math.max(0, r.en - Store.now()) : Math.max(0, r.rm); }
+
+// ── standings ────────────────────────────────────────────────────────────────
+function standings(div) {
+  const rows = new Map();
+  TEAMS.filter(t => t.division === div).forEach(t =>
+    rows.set(t.id, { id: t.id, name: t.name, country: t.country, mentor: t.mentor, p: 0, w: 0, d: 0, l: 0, gf: 0, ga: 0, gd: 0, pts: 0, rf: 0, ra: 0 }));
+  const cap = n => Math.max(0, Math.min(RULES.gdCap, Number(n) || 0));
+  const played = MATCHES.filter(m => m.division === div && m.stage === 'league' && rec(m.id).st === 'F' && rows.has(m.hr) && rows.has(m.ar));
+  for (const m of played) {
+    const r = rec(m.id), H = rows.get(m.hr), A = rows.get(m.ar);
+    const hs = cap(r.hs), as = cap(r.as);
+    H.p++; A.p++;
+    H.gf += hs; H.ga += as; A.gf += as; A.ga += hs;
+    H.rf += r.hs; H.ra += r.as; A.rf += r.as; A.ra += r.hs;
+    if (hs > as) { H.w++; A.l++; H.pts += RULES.win; }
+    else if (hs < as) { A.w++; H.l++; A.pts += RULES.win; }
+    else { H.d++; A.d++; H.pts += RULES.draw; A.pts += RULES.draw; }
+  }
+  rows.forEach(r => r.gd = r.gf - r.ga);
+  const h2h = (a, b) => {
+    let ap = 0, bp = 0;
+    for (const m of played) {
+      if (![m.hr, m.ar].includes(a) || ![m.hr, m.ar].includes(b)) continue;
+      const r = rec(m.id);
+      const x = cap(m.hr === a ? r.hs : r.as), y = cap(m.hr === b ? r.hs : r.as);
+      if (x > y) ap += 3; else if (y > x) bp += 3; else { ap++; bp++; }
+    }
+    return bp - ap;
+  };
+  const list = [...rows.values()].sort((a, b) =>
+    b.pts - a.pts || b.gd - a.gd || b.gf - a.gf || h2h(a.id, b.id) || a.ga - b.ga || a.id.localeCompare(b.id));
+  list.forEach((r, i) => { r.rank = i + 1; r.leagueOnly = LEAGUE_ONLY.has(r.id); });
+  // play-off seeding skips league-only (LSFC) teams
+  let s = 0; list.forEach(r => { r.seed = r.leagueOnly ? null : ++s; });
+  return list;
+}
+function allStandings() { return { ES: standings('ES'), MS: standings('MS'), HS: standings('HS') }; }
+function leagueDone(div) {
+  const l = MATCHES.filter(m => m.division === div && m.stage === 'league');
+  return l.length > 0 && l.every(m => rec(m.id).st === 'F');
+}
+
+function resolveRefs() {
+  const st = allStandings(), out = {};
+  for (const [ref, rule] of Object.entries(PH)) {
+    if (rule[0] !== 'seed') continue;
+    if (!leagueDone(rule[1])) { out[ref] = null; continue; }
+    const row = st[rule[1]].find(r => r.seed === rule[2]);
+    out[ref] = row ? row.id : null;
+  }
+  for (const [ref, rule] of Object.entries(PH)) {
+    if (rule[0] !== 'w' && rule[0] !== 'l') continue;
+    const m = MATCHES.find(x => x.stage === 'semi' && x.hr === rule[1] && x.ar === rule[2]);
+    if (!m) { out[ref] = null; continue; }
+    const r = rec(m.id);
+    const h = teamOf(m, 'h', out), a = teamOf(m, 'a', out);
+    if (r.st !== 'F' || !h || !a || r.hs === r.as) { out[ref] = null; continue; }
+    out[ref] = rule[0] === 'w' ? (r.hs > r.as ? h : a) : (r.hs > r.as ? a : h);
+  }
+  return out;
+}
+function teamOf(m, side, refs) {
+  const r = rec(m.id);
+  const manual = side === 'h' ? r.hid : r.aid;
+  if (manual) return manual;
+  const ref = side === 'h' ? m.hr : m.ar;
+  if (REAL(ref)) return ref;
+  return (refs || {})[ref] || null;
+}
+function slot(m, side, refs) {
+  const id = teamOf(m, side, refs);
+  const ref = side === 'h' ? m.hr : m.ar;
+  if (id && TM[id]) return { id, name: TM[id].name, country: TM[id].country, mentor: TM[id].mentor, ref, ok: true };
+  return { id: null, name: ref, country: '', mentor: '', ref, ok: false };
+}
+function podium(div, refs) {
+  const p = { first: null, second: null, third: null };
+  const f = MATCHES.find(m => m.division === div && m.stage === 'final');
+  const t = MATCHES.find(m => m.division === div && m.stage === 'third');
+  if (f) { const r = rec(f.id), h = teamOf(f, 'h', refs), a = teamOf(f, 'a', refs);
+    if (r.st === 'F' && h && a && r.hs !== r.as) { p.first = r.hs > r.as ? h : a; p.second = r.hs > r.as ? a : h; } }
+  if (t) { const r = rec(t.id), h = teamOf(t, 'h', refs), a = teamOf(t, 'a', refs);
+    if (r.st === 'F' && h && a && r.hs !== r.as) p.third = r.hs > r.as ? h : a; }
+  return p;
+}
+const stageLabel = s => T(s === 'league' ? 'league' : s);
+
+// ═════════════════════════ GATE ═════════════════════════
+const ME = { role: 'judge', name: '', field: '' };
+const qp = new URLSearchParams(location.search);
+
+function initGate() {
+  mountLang($('#gLang'));
+  const roles = [['admin', '🛠'], ['judge', '⏱'], ['screen', '📺']];
+  ME.role = qp.get('role') || localStorage.getItem('rr26o.role') || 'judge';
+  const host = $('#roles');
+  const paint = () => {
+    host.innerHTML = roles.map(([r, i]) =>
+      `<div class="role ${ME.role === r ? 'on' : ''}" data-r="${r}"><div class="i">${i}</div>
+       <div class="n">${T('role' + r[0].toUpperCase() + r.slice(1))}</div>
+       <div class="d">${T('role' + r[0].toUpperCase() + r.slice(1) + 'D')}</div></div>`).join('');
+    host.querySelectorAll('.role').forEach(e => e.onclick = () => { ME.role = e.dataset.r; paint(); syncGate(); });
+  };
+  paint();
+  const syncGate = () => {
+    $('#gPinWrap').classList.toggle('hidden', ME.role !== 'admin');
+    $('#gFieldWrap').classList.toggle('hidden', ME.role === 'admin');
+  };
+  syncGate();
+
+  const DEFAULT_DB = 'https://rr-osaka-resoccer-default-rtdb.asia-southeast1.firebasedatabase.app';
+  const DEFAULT_ROOM = 'RR26-OSAKA-SOCCER';
+  $('#gName').value = qp.get('name') || localStorage.getItem('rr26o.name') || '';
+  $('#gDb').value = qp.get('db') || localStorage.getItem('rr26o.db') || DEFAULT_DB;
+  $('#gRoom').value = qp.get('room') || localStorage.getItem('rr26o.room') || DEFAULT_ROOM;
+  $('#gField').value = qp.get('field') || localStorage.getItem('rr26o.field') || '';
+
+  $('#gTest').onclick = async () => {
+    const db = $('#gDb').value.trim();
+    if (!db) return toast(T('needFields'), 'err');
+    if (typeof firebase === 'undefined') { $('#gMsg').textContent = T('connFail'); return; }
+    $('#gMsg').textContent = '…';
+    try {
+      if (!firebase.apps.length) firebase.initializeApp({ databaseURL: db });
+      await firebase.database().ref('.info/serverTimeOffset').once('value');
+      $('#gMsg').textContent = T('connOk');
+    } catch (e) { $('#gMsg').textContent = T('connFail') + ' — ' + (e.message || e); }
+  };
+
+  $('#gOffline').onclick = () => enter(true);
+  $('#gGo').onclick = () => enter(false);
+  if (qp.get('auto') === '1' && $('#gName').value && ($('#gDb').value || qp.get('offline'))) enter(qp.get('offline') === '1');
+}
+
+async function enter(offline) {
+  ME.name = $('#gName').value.trim();
+  ME.field = $('#gField').value;
+  const db = $('#gDb').value.trim(), room = $('#gRoom').value.trim();
+  if (!ME.name) return toast(T('needFields'), 'err');
+  if (!offline && (!db || room.length < 8)) return toast(T('needFields'), 'err');
+
+  localStorage.setItem('rr26o.role', ME.role); localStorage.setItem('rr26o.name', ME.name);
+  localStorage.setItem('rr26o.db', db); localStorage.setItem('rr26o.room', room);
+  localStorage.setItem('rr26o.field', ME.field);
+
+  $('#gMsg').textContent = '…';
+  try {
+    if (offline) { Store.initLocal(room); toast(T('offlineOn')); }
+    else await Store.initFirebase(db, room);
+  } catch (e) { $('#gMsg').textContent = T('connFail') + ' — ' + (e.message || e); return; }
+
+  if (ME.role === 'admin') {
+    const set = Store.data.settings || {};
+    if (set.pin) { if ($('#gPin').value !== set.pin) { $('#gMsg').textContent = T('badPin'); return; } }
+    else if ($('#gPin').value) await Store.update('settings', { pin: $('#gPin').value });
+  }
+
+  // first-time seed: write today's already-played results
+  if (!Store.data.settings.seeded) {
+    await Store.update('settings', { seeded: 1, createdAt: new Date().toISOString() });
+    await loadPreload(true);
+  }
+
+  Store.cb = render;
+  $('#gate').classList.add('hidden'); $('#app').classList.remove('hidden');
+  ME.tab = ME.role === 'screen' ? 'screen' : ME.role === 'admin' ? 'standings' : 'judge';
+  buildTopbar(); applyStatic(); render(); paintConn();
+  if (ME.role === 'screen') document.body.style.overflow = 'hidden';
+}
+
+async function loadPreload(silent) {
+  for (const [id, hs, as] of PRELOAD) {
+    const m = MX[id]; if (!m) continue;
+    await Store.update('m/' + id, {
+      hs, as, st: 'F', w: hs > as ? m.hr : as > hs ? m.ar : 'D',
+      j: 'import', sb: new Date().toISOString(), pr: 2, rn: false, rm: 0,
+    });
+  }
+  Store.log(null, 'preload', PRELOAD.length + ' matches');
+  if (!silent) toast(T('done') + ' — ' + PRELOAD.length, 'ok');
+}
+
+// ═════════════════════════ TOPBAR ═════════════════════════
+function buildTopbar() {
+  mountLang($('#langbar'));
+  $('#whoami').textContent = ME.name + ' · ' + T('role' + ME.role[0].toUpperCase() + ME.role.slice(1)) +
+    (ME.field ? ' · ' + T('field') + ' ' + ME.field : '');
+  const tabs = ME.role === 'screen' ? [['screen', 'tabScreen'], ['standings', 'tabStandings']]
+    : ME.role === 'judge' ? [['judge', 'tabJudge'], ['screen', 'tabScreen'], ['standings', 'tabStandings'], ['schedule', 'tabSchedule']]
+    : [['standings', 'tabStandings'], ['schedule', 'tabSchedule'], ['playoff', 'tabPlayoff'], ['judge', 'tabJudge'], ['screen', 'tabScreen'], ['settings', 'tabSettings']];
+  $('#tabs').innerHTML = tabs.map(([k, l]) => `<button data-tab="${k}" class="${ME.tab === k ? 'on' : ''}">${T(l)}</button>`).join('');
+  $('#tabs').querySelectorAll('button').forEach(b => b.onclick = () => { ME.tab = b.dataset.tab; buildTopbar(); render(); });
+  $('#btnLeave').onclick = () => { location.href = location.pathname; };
+}
+function paintConn() {
+  const el = $('#conn'); if (!el) return;
+  if (Store.mode === 'local') { el.innerHTML = '<span class="dot warn"></span><span>' + T('offline') + '</span>'; return; }
+  const ok = Store.connected;
+  const txt = ok ? T('connected') : (Store.pending ? T('queued').replace('%n', Store.pending) : T('disconnected'));
+  el.innerHTML = `<span class="dot ${ok ? '' : 'off'}"></span><span>${txt}</span>`;
+}
+
+// ═════════════════════════ RENDER ═════════════════════════
+let selMatch = localStorage.getItem('rr26o.match') || null;
+function render() {
+  if ($('#app').classList.contains('hidden')) return;
+  const v = $('#view');
+  const refs = resolveRefs();
+  document.body.classList.toggle('screenmode', ME.tab === 'screen');
+  $('#topbar').classList.toggle('hidden', false);
+  if (ME.tab === 'judge') v.innerHTML = viewJudge(refs);
+  else if (ME.tab === 'screen') v.innerHTML = viewScreen(refs);
+  else if (ME.tab === 'standings') v.innerHTML = viewStandings(refs);
+  else if (ME.tab === 'schedule') v.innerHTML = viewSchedule(refs);
+  else if (ME.tab === 'playoff') v.innerHTML = viewPlayoff(refs);
+  else if (ME.tab === 'settings') v.innerHTML = viewSettings();
+  wire(refs);
+  applyStatic();
+  paintConn();
+}
+
+// ── JUDGE ────────────────────────────────────────────────────────────────────
+function viewJudge(refs) {
+  const canEdit = ME.role !== 'screen';
+  const fFilter = ME.field || (localStorage.getItem('rr26o.jf') || '');
+  const pendOnly = localStorage.getItem('rr26o.jp') !== '0';
+  const list = ordered().filter(m => {
+    if (fFilter && m.field !== fFilter) return false;
+    if (pendOnly && rec(m.id).st === 'F') return false;
+    return true;
+  });
+
+  const listHtml = list.map(m => {
+    const r = rec(m.id), h = slot(m, 'h', refs), a = slot(m, 'a', refs);
+    return `<div class="mrow ${r.st === 'F' ? 'fin' : ''} ${m.id === selMatch ? 'on' : ''}" data-mid="${m.id}">
+      <div><div class="tm">${slotTime(m)}</div><span class="pill ${m.division}">${m.field}</span></div>
+      <div><div class="vs">${esc(h.name)} <span class="muted">vs</span> ${esc(a.name)}</div>
+      <div class="tid">${m.hr} · ${m.ar}${m.stage !== 'league' ? ' · ' + stageLabel(m.stage) : ''}${m.wasAt ? ' · <span class="pill moved">' + T('moved') + '</span>' : ''}</div></div>
+      <div>${r.st === 'F' ? `<b>${r.hs}:${r.as}</b>` : `<span class="pill ${r.st === 'L' ? 'live' : 'scheduled'}">${T(r.st === 'L' ? 'live' : 'scheduled')}</span>`}</div></div>`;
+  }).join('') || `<p class="muted tiny center" style="padding:18px">—</p>`;
+
+  return `<div class="wrap"><div class="grid" style="grid-template-columns:330px 1fr;align-items:start" id="jcols">
+    <div class="card">
+      <h2>${T('selectMatch')}</h2>
+      <div class="row" style="margin-bottom:9px">
+        <label class="fld" style="flex:1"><span>${T('field')}</span>
+          <select id="jField" ${ME.field ? 'disabled' : ''}>
+            <option value="">${T('allFields')}</option>
+            <option value="A" ${fFilter === 'A' ? 'selected' : ''}>A — ES</option>
+            <option value="B" ${fFilter === 'B' ? 'selected' : ''}>B — MS</option>
+            <option value="C" ${fFilter === 'C' ? 'selected' : ''}>C — HS</option>
+            <option value="D" ${fFilter === 'D' ? 'selected' : ''}>D — ES</option>
+          </select></label>
+      </div>
+      <div class="row" style="margin-bottom:6px">
+        <label style="display:flex;gap:6px;align-items:center;font-size:12.5px;color:var(--dim)">
+          <input type="checkbox" id="jPend" ${pendOnly ? 'checked' : ''} style="width:auto"> ${T('pending')}</label>
+        <div class="spacer"></div>
+        <button class="btn ghost" id="jNext" style="padding:4px 9px;font-size:12px">→ ${T('nextUp')}</button>
+      </div>
+      <div class="matchlist">${listHtml}</div>
+    </div>
+    <div id="jpanel">${panelJudge(refs, canEdit)}</div>
+  </div></div>`;
+}
+
+function panelJudge(refs, canEdit) {
+  const m = MX[selMatch];
+  if (!m) return `<div class="card center muted" style="padding:56px">${T('noMatch')}</div>`;
+  const r = rec(m.id), h = slot(m, 'h', refs), a = slot(m, 'a', refs);
+  const ready = !!(h.ok && a.ok), fin = r.st === 'F';
+  const mercy = (r.hs >= RULES.mercy || r.as >= RULES.mercy) && !fin;
+  const lock = fin || !ready || !canEdit;
+
+  let banner = '';
+  if (fin) {
+    const w = r.w === 'D' ? T('draw') : (TM[r.w] || {}).name || r.w || '';
+    banner = `<div class="banner done">✅ ${T('finished')} — ${esc(w)}${r.w === 'D' ? '' : ` (${r.hs}:${r.as})`}</div>`;
+  } else if (mercy) banner = `<div class="banner mercy">🏁 ${T('mercy')}</div>`;
+  else if (!ready) banner = `<div class="banner info">⏳ ${T('leagueIncomplete')}</div>`;
+
+  const side = (cls, key, info, sc) => `<div class="side ${cls}">
+    <div class="lbl">${T(key)} · ${esc(info.ref)}</div>
+    <div class="tname">${esc(info.name)}${LEAGUE_ONLY.has(info.id) ? ' <span class="pill lo">' + T('leagueOnly') + '</span>' : ''}</div>
+    <div class="tmeta">${esc(info.country)}${info.mentor ? ' · ' + esc(info.mentor) : ''}</div>
+    <div class="sc">${sc}</div>
+    <button class="btn primary goalbtn" data-goal="${key}" data-d="1" ${lock ? 'disabled' : ''}>⚽ ${T('goal')}</button>
+    <button class="btn ghost" data-goal="${key}" data-d="-1" style="width:100%" ${lock ? 'disabled' : ''}>− ${T('undo')}</button></div>`;
+
+  let tabs = '';
+  for (let i = 1; i <= RULES.halves; i++)
+    tabs += `<button data-per="${i}" class="${r.pr === i ? 'on' : ''}" ${fin || !canEdit ? 'disabled' : ''}>${T(i === 1 ? 'firstHalf' : 'secondHalf')}</button>`;
+
+  return `<div class="card" style="margin-bottom:12px"><div class="row">
+      <span class="pill ${m.division}">${T(m.division)} · ${T('field')} ${m.field}</span>
+      <span class="pill ${m.stage === 'league' ? 'scheduled' : 'S'}">${stageLabel(m.stage)}</span>
+      <b class="tid">${m.id}</b><span class="muted tiny">${slotDate(m)} ${slotTime(m)}</span>
+      ${m.wasAt ? `<span class="pill moved">${T('moved')} · ${T('wasAt').replace('%s', m.wasAt)}</span>` : ''}
+      <div class="spacer"></div>
+      <span class="pill ${r.st === 'F' ? 'finished' : r.st === 'L' ? 'live' : 'scheduled'}">${T(r.st === 'F' ? 'finished' : r.st === 'L' ? 'live' : 'scheduled')}</span>
+    </div></div>${banner}
+    <div class="matchbar" style="margin-top:12px">
+      ${side('h', 'home', h, r.hs)}
+      <div class="clock">
+        <div class="periodtabs">${tabs}</div>
+        <div class="t" id="clockT">${fmt(remainOf(r))}</div>
+        <div class="row" style="justify-content:center">
+          <button class="btn big ${r.rn ? 'danger' : 'primary'}" id="btnStart" ${(fin || !ready || !canEdit) ? 'disabled' : ''}>
+            ${r.rn ? '⏸ ' + T('pause') : '▶ ' + (remainOf(r) < HALF_MS ? T('resume') : T('start'))}</button>
+        </div>
+        <div class="row" style="justify-content:center">
+          <button class="btn" id="btnNext" ${(r.pr < RULES.halves && !fin && canEdit) ? '' : 'disabled'}>⏭ ${T('nextHalf')}</button>
+          <button class="btn ghost" id="btnRT" ${fin || !canEdit ? 'disabled' : ''}>↺ ${T('resetTimer')}</button>
+        </div>
+        <div class="tiny muted center">${T('rule1')} · ${T('rule2')}</div>
+      </div>
+      ${side('a', 'away', a, r.as)}
+    </div>
+    <div class="card" style="margin-top:12px"><div class="row">
+      <label class="fld" style="flex:2"><span>${T('note')}</span><input type="text" id="jNote" value="${esc(r.nt)}" ${canEdit ? '' : 'disabled'}></label>
+      <div style="flex:1;display:flex;align-items:flex-end;gap:8px">
+        ${fin ? `<button class="btn big danger" id="btnReopen" style="flex:1" ${canEdit ? '' : 'disabled'}>${T('reopen')}</button>`
+              : `<button class="btn big ok" id="btnSubmit" style="flex:1" ${ready && canEdit ? '' : 'disabled'}>📤 ${T('submit')}</button>`}
+      </div></div>
+      ${fin && r.j ? `<p class="tiny muted" style="margin:9px 0 0">${T('judgeName')}: ${esc(r.j)} · ${esc(r.sb.replace('T', ' ').slice(0, 19))}</p>` : ''}
+    </div>`;
+}
+
+// ── SCREEN ───────────────────────────────────────────────────────────────────
+function viewScreen(refs) {
+  const f = localStorage.getItem('rr26o.sf') || '';
+  const fields = f ? [f] : ['A', 'D', 'B', 'C'];
+  const om = ordered();
+  const active = fd => {
+    const pool = om.filter(m => m.field === fd);
+    const lv = pool.filter(m => rec(m.id).st === 'L');
+    if (lv.length) { lv.sort((x, y) => (rec(y.id).rn ? 1 : 0) - (rec(x.id).rn ? 1 : 0)); return lv[0]; }
+    return pool.find(m => rec(m.id).st !== 'F') || pool.slice().reverse().find(m => rec(m.id).st === 'F') || null;
+  };
+  const boards = fields.map(fd => {
+    const m = active(fd);
+    if (!m) return `<div class="board"><div class="fieldtag">${T('field')} ${fd}</div><div class="st">—</div></div>`;
+    const r = rec(m.id), h = slot(m, 'h', refs), a = slot(m, 'a', refs);
+    const mercy = (r.hs >= RULES.mercy || r.as >= RULES.mercy) && r.st !== 'F';
+    return `<div class="board">
+      <div class="row"><span class="fieldtag">${T('field')} ${fd} · ${T(m.division)}</span>
+      <span class="pill ${m.stage === 'league' ? 'scheduled' : 'S'}">${stageLabel(m.stage)}</span>
+      <div class="spacer"></div>
+      <span class="pill ${r.st === 'F' ? 'finished' : r.st === 'L' ? 'live' : 'scheduled'}">${T(r.st === 'F' ? 'finished' : r.st === 'L' ? 'live' : 'scheduled')}</span>
+      <span class="muted tiny">${slotTime(m)}</span></div>
+      <div class="teams">
+        <div><div class="tn">${esc(h.name)}</div><div class="muted tiny">${esc(h.country)}</div></div>
+        <div><div class="big">${r.hs} : ${r.as}</div></div>
+        <div><div class="tn r">${esc(a.name)}</div><div class="muted tiny" style="text-align:right">${esc(a.country)}</div></div>
+      </div>
+      <div class="clockbig" data-clock="${m.id}">${fmt(remainOf(r))}</div>
+      <div class="st">${mercy ? T('mercy') : T(r.pr === 2 ? 'secondHalf' : 'firstHalf')}</div></div>`;
+  }).join('');
+
+  const up = om.filter(m => rec(m.id).st !== 'F' && (!f || m.field === f)).slice(0, 9).map(m => {
+    const h = slot(m, 'h', refs), a = slot(m, 'a', refs);
+    return `<div class="upitem"><div class="t">${slotDate(m).slice(5)} ${slotTime(m)} · ${T('field')} ${m.field}
+      <span class="pill ${m.division}">${T(m.division)}</span></div>
+      <div class="n">${esc(h.name)} <span class="muted">vs</span> ${esc(a.name)}</div></div>`;
+  }).join('') || '<p class="muted tiny">—</p>';
+
+  const divs = f ? [FIELD_DIV[f]] : ['ES', 'MS', 'HS'];
+  const mini = divs.map(d => {
+    const rows = standings(d).slice(0, 6).map(r =>
+      `<tr class="${r.seed && r.seed <= 4 ? 'seed' : ''} ${r.leagueOnly ? 'lo' : ''}"><td class="num">${r.rank}</td>
+       <td>${esc(r.name)}${r.leagueOnly ? ' <span class="pill lo">' + T('leagueOnly') + '</span>' : ''}</td>
+       <td class="num">${r.p}</td><td class="num">${r.gd > 0 ? '+' : ''}${r.gd}</td><td class="num"><b>${r.pts}</b></td></tr>`).join('');
+    return `<div style="margin-bottom:11px"><div class="tiny muted" style="margin-bottom:4px"><span class="pill ${d}">${T(d)}</span></div>
+      <table><thead><tr><th class="num">${T('rank')}</th><th>${T('team')}</th><th class="num">${T('P')}</th>
+      <th class="num">${T('GD')}</th><th class="num">${T('Pts')}</th></tr></thead><tbody>${rows}</tbody></table></div>`;
+  }).join('');
+
+  return `<div class="wrap" style="max-width:none;padding:0"><div class="sc-wrap" style="height:calc(100dvh - 52px)">
+    <div class="row">
+      <label class="fld" style="min-width:150px"><span>${T('field')}</span>
+        <select id="sField"><option value="">${T('allFields')}</option>
+        <option value="A" ${f === 'A' ? 'selected' : ''}>A — ES</option>
+        <option value="B" ${f === 'B' ? 'selected' : ''}>B — MS</option>
+        <option value="C" ${f === 'C' ? 'selected' : ''}>C — HS</option>
+        <option value="D" ${f === 'D' ? 'selected' : ''}>D — ES</option></select></label>
+      <div class="spacer"></div>
+      <button class="btn ghost" id="btnFs">⛶</button>
+    </div>
+    <div class="sc-main">
+      <div id="boards" class="${fields.length > 1 ? 'multi' : ''}">${boards}</div>
+      <div class="card" style="display:flex;flex-direction:column;min-height:0">
+        <h2>${T('nextUp')}</h2><div class="uplist">${up}</div>
+        <h2 style="margin-top:14px">${T('standings')}</h2><div style="overflow:auto">${mini}</div>
+      </div>
+    </div></div></div>`;
+}
+
+// ── STANDINGS ────────────────────────────────────────────────────────────────
+function viewStandings(refs) {
+  const st = allStandings();
+  const tbl = d => {
+    const rows = st[d].map(r => `<tr class="${r.seed && r.seed <= 4 ? 'seed' : ''} ${r.leagueOnly ? 'lo' : ''}">
+      <td class="num">${r.rank}</td>
+      <td><div>${esc(r.name)}${r.leagueOnly ? ' <span class="pill lo">' + T('leagueOnly') + '</span>' : ''}</div>
+      <div class="tid">${r.id} · ${esc(r.country)}</div></td>
+      <td class="num">${r.p}</td><td class="num">${r.w}</td><td class="num">${r.d}</td><td class="num">${r.l}</td>
+      <td class="num">${r.gf}</td><td class="num">${r.ga}</td><td class="num">${r.gd > 0 ? '+' : ''}${r.gd}</td>
+      <td class="num"><b>${r.pts}</b></td>
+      <td class="num tid">${r.seed ? r.seed : '—'}</td></tr>`).join('');
+    const done = MATCHES.filter(m => m.division === d && m.stage === 'league');
+    const fin = done.filter(m => rec(m.id).st === 'F').length;
+    return `<div class="card" style="background:var(--bg2)">
+      <div class="row" style="margin-bottom:7px"><span class="pill ${d}">${T(d + 'full')}</span>
+        <span class="pill ${leagueDone(d) ? 'finished' : 'scheduled'}">${fin}/${done.length}</span></div>
+      <div class="bar" style="margin-bottom:9px"><i style="width:${done.length ? Math.round(fin / done.length * 100) : 0}%"></i></div>
+      <table><thead><tr><th class="num">${T('rank')}</th><th>${T('team')}</th>
+      ${['P', 'W', 'D', 'L', 'GF', 'GA', 'GD', 'Pts'].map(k => `<th class="num">${T(k)}</th>`).join('')}
+      <th class="num">${T('seedNote')}</th></tr></thead><tbody>${rows}</tbody></table></div>`;
+  };
+  return `<div class="wrap">
+    <div class="card" style="margin-bottom:12px"><div class="row">
+      <h2 style="margin:0">${T('standings')}</h2><div class="spacer"></div>
+      <button class="btn ghost" id="csvStand">⬇ ${T('exportStandings')}</button>
+      <button class="btn ghost" id="csvRes">⬇ ${T('exportCsv')}</button>
+    </div>
+    <p class="tiny muted" style="margin:8px 0 0">ℹ️ ${T('leagueOnlyNote')} · ${T('rule3')}</p></div>
+    <div class="grid g3">${['ES', 'MS', 'HS'].map(tbl).join('')}</div></div>`;
+}
+
+// ── SCHEDULE ─────────────────────────────────────────────────────────────────
+function viewSchedule(refs) {
+  const q = (localStorage.getItem('rr26o.q') || '');
+  const fd = localStorage.getItem('rr26o.sd') || '', fday = localStorage.getItem('rr26o.sday') || '', fs = localStorage.getItem('rr26o.ss') || '';
+  const list = ordered().filter(m => {
+    const r = rec(m.id);
+    if (fd && m.division !== fd) return false;
+    if (fday && slotDate(m) !== fday) return false;
+    if (fs === 'pending' && r.st === 'F') return false;
+    if (fs === 'finished' && r.st !== 'F') return false;
+    if (q) {
+      const h = slot(m, 'h', refs), a = slot(m, 'a', refs);
+      if ((h.name + ' ' + a.name + ' ' + m.hr + ' ' + m.ar + ' ' + m.id).toLowerCase().indexOf(q.toLowerCase()) === -1) return false;
+    }
+    return true;
+  });
+  const moved = MATCHES.filter(m => m.wasAt);
+  const admin = ME.role === 'admin';
+  return `<div class="wrap">
+    <div class="card" style="margin-bottom:12px">
+      <div class="row" style="margin-bottom:9px"><h2 style="margin:0">${T('deadlineTitle')}</h2></div>
+      <p class="tiny muted" style="margin:0 0 9px">${T('deadlineNote')}</p>
+      <table><thead><tr><th>${T('match')}</th><th>${T('field')}</th><th>${T('time')}</th><th>${T('home')}</th><th>${T('away')}</th></tr></thead><tbody>
+      ${moved.map(m => { const h = slot(m, 'h', refs), a = slot(m, 'a', refs);
+        return `<tr><td class="tid">${m.id}</td><td>${m.field}</td>
+        <td><b>${slotTime(m)}</b> <span class="muted tiny" style="text-decoration:line-through">${m.wasAt}</span></td>
+        <td>${esc(h.name)}</td><td>${esc(a.name)}</td></tr>`; }).join('')}</tbody></table>
+    </div>
+    <div class="card"><div class="row" style="margin-bottom:9px">
+      <h2 style="margin:0">${T('schedule') || T('tabSchedule')}</h2><div class="spacer"></div>
+      <select id="sDiv" style="width:110px"><option value="">${T('all')}</option>
+        ${['ES', 'MS', 'HS'].map(d => `<option ${fd === d ? 'selected' : ''}>${d}</option>`).join('')}</select>
+      <select id="sDay" style="width:140px"><option value="">${T('all')}</option>
+        ${['2026-08-11', '2026-08-12'].map(d => `<option ${fday === d ? 'selected' : ''}>${d}</option>`).join('')}</select>
+      <select id="sSt" style="width:130px"><option value="">${T('all')}</option>
+        <option value="pending" ${fs === 'pending' ? 'selected' : ''}>${T('pending')}</option>
+        <option value="finished" ${fs === 'finished' ? 'selected' : ''}>${T('finished')}</option></select>
+      <input type="text" id="sQ" placeholder="${T('searchTeam')}" value="${esc(q)}" style="width:170px">
+    </div>
+    <div style="max-height:64vh;overflow:auto"><table>
+      <thead><tr><th>${T('day')}</th><th>${T('time')}</th><th>${T('field')}</th><th>${T('match')}</th>
+      <th>${T('home')}</th><th class="num">–</th><th>${T('away')}</th><th>${T('winner')}</th><th>${T('judgeName')}</th><th></th>${admin ? '<th></th>' : ''}</tr></thead>
+      <tbody>${list.map(m => {
+        const r = rec(m.id), h = slot(m, 'h', refs), a = slot(m, 'a', refs);
+        const w = r.st === 'F' ? (r.w === 'D' ? T('draw') : (TM[r.w] || {}).name || '') : '';
+        return `<tr><td class="tid">${slotDate(m).slice(5)}</td>
+        <td class="tid">${slotTime(m)}${m.wasAt ? ' <span class="pill moved">!</span>' : ''}</td>
+        <td><span class="pill ${m.division}">${m.field}</span></td>
+        <td class="tid">${m.id}${m.stage !== 'league' ? ' <span class="pill S">' + stageLabel(m.stage) + '</span>' : ''}</td>
+        <td>${esc(h.name)}</td><td class="num"><b>${r.st === 'F' ? r.hs + ':' + r.as : '–'}</b></td><td>${esc(a.name)}</td>
+        <td>${esc(w)}</td><td class="tid">${esc(r.j)}</td>
+        <td><span class="pill ${r.st === 'F' ? 'finished' : r.st === 'L' ? 'live' : 'scheduled'}">${T(r.st === 'F' ? 'finished' : r.st === 'L' ? 'live' : 'scheduled')}</span></td>
+        ${admin ? `<td><button class="btn ghost" data-edit="${m.id}" style="padding:3px 8px;font-size:11px">✎</button></td>` : ''}</tr>`;
+      }).join('')}</tbody></table></div></div></div>`;
+}
+
+// ── PLAYOFF ──────────────────────────────────────────────────────────────────
+function viewPlayoff(refs) {
+  const ko = ordered().filter(m => m.stage !== 'league');
+  const rows = ko.map(m => {
+    const r = rec(m.id), h = slot(m, 'h', refs), a = slot(m, 'a', refs);
+    const w = r.st === 'F' ? (r.w === 'D' ? T('draw') : (TM[r.w] || {}).name || '') : '';
+    return `<tr><td class="tid">${slotTime(m)}</td><td>${m.field}</td>
+      <td><span class="pill ${m.division}">${T(m.division)}</span></td>
+      <td><span class="pill S">${stageLabel(m.stage)}</span></td>
+      <td>${esc(h.name)}<div class="tid">${m.hr}</div></td>
+      <td class="num"><b>${r.st === 'F' ? r.hs + ' : ' + r.as : '–'}</b></td>
+      <td>${esc(a.name)}<div class="tid">${m.ar}</div></td><td>${esc(w)}</td></tr>`;
+  }).join('');
+  const pods = ['ES', 'MS', 'HS'].map(d => {
+    const p = podium(d, refs), nm = id => id && TM[id] ? TM[id].name : '—';
+    return `<div class="card" style="background:var(--bg2)"><div class="row" style="margin-bottom:7px"><span class="pill ${d}">${T(d + 'full')}</span></div>
+      <div class="podium">
+        <div class="pod g"><div class="r">🥇 ${T('first')}</div><div class="n">${esc(nm(p.first))}</div></div>
+        <div class="pod s"><div class="r">🥈 ${T('second')}</div><div class="n">${esc(nm(p.second))}</div></div>
+        <div class="pod b"><div class="r">🥉 ${T('thirdPlace')}</div><div class="n">${esc(nm(p.third))}</div></div>
+      </div></div>`;
+  }).join('');
+  const incomplete = ['ES', 'MS', 'HS'].some(d => !leagueDone(d));
+  return `<div class="wrap"><div class="card" style="margin-bottom:12px">
+    <h2>${T('playoffs')}</h2>
+    <table><thead><tr><th>${T('time')}</th><th>${T('field')}</th><th>${T('division')}</th><th>${T('match')}</th>
+    <th>${T('home')}</th><th class="num">–</th><th>${T('away')}</th><th>${T('winner')}</th></tr></thead><tbody>${rows}</tbody></table>
+    <p class="tiny muted" style="margin:9px 0 0">${incomplete ? 'ℹ️ ' + T('leagueIncomplete') + ' ' : ''}${T('leagueOnlyNote')}</p>
+    </div><div class="grid g3">${pods}</div></div>`;
+}
+
+// ── SETTINGS ─────────────────────────────────────────────────────────────────
+function viewSettings() {
+  const base = location.origin + location.pathname;
+  const q = (r, f) => base + '?role=' + r + '&db=' + encodeURIComponent(Store.dbUrl) + '&room=' + encodeURIComponent(Store.room) + (f ? '&field=' + f : '');
+  const links = [
+    [T('judgeLink') + ' — A (ES)', q('judge', 'A')],
+    [T('judgeLink') + ' — B (MS)', q('judge', 'B')],
+    [T('judgeLink') + ' — C (HS)', q('judge', 'C')],
+    [T('judgeLink') + ' — D (ES)', q('judge', 'D')],
+    [T('screenLink'), q('screen', '')],
+    [T('adminLink'), q('admin', '')],
+  ];
+  const log = Object.values(Store.data.log || {}).sort((a, b) => String(b.ts).localeCompare(String(a.ts))).slice(0, 120);
+  return `<div class="wrap"><div class="grid g2">
+    <div class="card"><h2>${T('judgeLink')}</h2>
+      ${Store.mode === 'local' ? `<p class="tiny muted">${T('offlineOn')}</p>` :
+        links.map(([n, u], i) => `<div style="margin-bottom:9px"><div class="tiny muted">${n}</div>
+        <div class="row" style="gap:6px"><code class="k" style="flex:1">${esc(u)}</code>
+        <button class="btn ghost" data-copy="${i}" style="padding:4px 9px;font-size:11.5px">${T('copy')}</button></div></div>`).join('')}
+    </div>
+    <div class="card"><h2>${T('tabSettings')}</h2>
+      <div class="row" style="margin-bottom:10px">
+        <span class="tiny muted">${T('storage')}: <b>${Store.mode === 'fb' ? T('online') : T('offline')}</b></span>
+        <div class="spacer"></div><span class="tiny muted">${T('roomCode')}: <code class="k">${esc(Store.room)}</code></span>
+      </div>
+      <div class="row" style="margin-bottom:10px">
+        <button class="btn" id="btnPreload">📥 ${T('loadToday')}</button>
+        <button class="btn ghost" id="btnBackup">⬇ ${T('backup')}</button>
+      </div>
+      <p class="tiny muted" style="margin:0 0 12px">${T('loadTodayD')}</p>
+      <div class="row"><input type="password" id="admPin" placeholder="${T('adminPin')}" style="width:140px">
+        <button class="btn danger" id="btnReset">${T('resetAll')}</button></div>
+    </div></div>
+    <div class="card" style="margin-top:12px"><h2>${T('activity')}</h2>
+      <div style="max-height:300px;overflow:auto"><table><thead><tr><th>${T('time')}</th><th>${T('match')}</th><th>action</th><th>detail</th><th>${T('judgeName')}</th></tr></thead>
+      <tbody>${log.map(l => `<tr><td class="tid">${esc(String(l.ts).replace('T', ' ').slice(0, 19))}</td>
+      <td class="tid">${esc(l.m)}</td><td>${esc(l.a)}</td><td class="tid">${esc(l.d)}</td><td class="tid">${esc(l.u)}</td></tr>`).join('')}</tbody></table></div>
+    </div></div>`;
+}
+
+// ═════════════════════════ WIRING ═════════════════════════
+function wire(refs) {
+  const on = (sel, ev, fn) => { const e = $(sel); if (e) e[ev] = fn; };
+
+  document.querySelectorAll('.mrow').forEach(e => e.onclick = () => {
+    selMatch = e.dataset.mid; localStorage.setItem('rr26o.match', selMatch);
+    const p = $('#jpanel'); if (p) { p.innerHTML = panelJudge(resolveRefs(), ME.role !== 'screen'); wire(resolveRefs()); }
+    document.querySelectorAll('.mrow').forEach(x => x.classList.toggle('on', x.dataset.mid === selMatch));
+  });
+
+  on('#jField', 'onchange', e => { localStorage.setItem('rr26o.jf', e.target.value); render(); });
+  on('#jPend', 'onchange', e => { localStorage.setItem('rr26o.jp', e.target.checked ? '1' : '0'); render(); });
+  on('#jNext', 'onclick', () => {
+    const f = ME.field || localStorage.getItem('rr26o.jf') || '';
+    const n = ordered().find(m => rec(m.id).st !== 'F' && (!f || m.field === f));
+    if (n) { selMatch = n.id; localStorage.setItem('rr26o.match', n.id); render(); }
+  });
+  on('#sField', 'onchange', e => { localStorage.setItem('rr26o.sf', e.target.value); render(); });
+  on('#btnFs', 'onclick', () => { document.fullscreenElement ? document.exitFullscreen() : document.documentElement.requestFullscreen(); });
+  on('#sDiv', 'onchange', e => { localStorage.setItem('rr26o.sd', e.target.value); render(); });
+  on('#sDay', 'onchange', e => { localStorage.setItem('rr26o.sday', e.target.value); render(); });
+  on('#sSt', 'onchange', e => { localStorage.setItem('rr26o.ss', e.target.value); render(); });
+  on('#sQ', 'oninput', e => { localStorage.setItem('rr26o.q', e.target.value); clearTimeout(wire._q); wire._q = setTimeout(render, 350); });
+
+  // judge controls
+  const m = MX[selMatch];
+  if (m) {
+    const r = () => rec(m.id);
+    document.querySelectorAll('[data-goal]').forEach(b => b.onclick = () => {
+      const cur = r(); const side = b.dataset.goal === 'home' ? 'hs' : 'as';
+      const v = Math.max(0, Math.min(20, (cur[side] || 0) + Number(b.dataset.d)));
+      if (v === cur[side]) return;
+      const patch = { [side]: v }; if (cur.st === 'S') patch.st = 'L';
+      if (v >= RULES.mercy && cur.rn) { patch.rn = false; patch.rm = Math.max(0, cur.en - Store.now()); patch.en = null; }
+      Store.update('m/' + m.id, patch);
+      Store.log(m.id, 'goal', `${b.dataset.goal} ${Number(b.dataset.d) > 0 ? '+1' : '-1'}`);
+      beep(1);
+    });
+    on('#btnStart', 'onclick', () => {
+      const c = r();
+      if (c.rn) { Store.update('m/' + m.id, { rn: false, rm: Math.max(0, c.en - Store.now()), en: null }); Store.log(m.id, 'pause', ''); }
+      else { Store.update('m/' + m.id, { rn: true, en: Store.now() + Math.max(0, c.rm), st: 'L' }); Store.log(m.id, 'start', 'P' + c.pr); }
+      beep(1);
+    });
+    on('#btnNext', 'onclick', () => { Store.update('m/' + m.id, { pr: Math.min(RULES.halves, r().pr + 1), rn: false, rm: HALF_MS, en: null, st: 'L' }); Store.log(m.id, 'next_half', ''); });
+    on('#btnRT', 'onclick', () => { Store.update('m/' + m.id, { rn: false, rm: HALF_MS, en: null }); Store.log(m.id, 'reset_timer', ''); });
+    document.querySelectorAll('[data-per]').forEach(b => b.onclick = () =>
+      Store.update('m/' + m.id, { pr: Number(b.dataset.per), rn: false, rm: HALF_MS, en: null }));
+    on('#btnSubmit', 'onclick', () => {
+      const c = r(), h = slot(m, 'h', refs), a = slot(m, 'a', refs);
+      if (m.stage !== 'league' && c.hs === c.as) return toast(T('knockoutNoDraw'), 'err');
+      const w = c.hs === c.as ? T('draw') : (c.hs > c.as ? h.name : a.name);
+      if (!confirm(`${T('submitConfirm')}\n\n${h.name} ${c.hs} : ${c.as} ${a.name}\n${T('winner')}: ${w}`)) return;
+      Store.update('m/' + m.id, {
+        st: 'F', w: c.hs > c.as ? h.id : c.as > c.hs ? a.id : 'D', j: ME.name,
+        nt: ($('#jNote') || {}).value || '', sb: new Date().toISOString(), rn: false, en: null,
+        hid: h.id, aid: a.id,
+      });
+      Store.log(m.id, 'submit', `${c.hs}:${c.as}`);
+      toast(T('submitted'), 'ok'); beep(2);
+    });
+    on('#btnReopen', 'onclick', () => {
+      if (!confirm(T('reopenConfirm'))) return;
+      const pin = (Store.data.settings || {}).pin;
+      if (pin && ME.role !== 'admin' && prompt(T('adminPin')) !== pin) return toast(T('badPin'), 'err');
+      Store.update('m/' + m.id, { st: 'L', w: null, sb: '' });
+      Store.log(m.id, 'reopen', '');
+    });
+  }
+
+  // exports
+  on('#csvRes', 'onclick', () => download('roborave-soccer-results.csv', csvResults(refs)));
+  on('#csvStand', 'onclick', () => download('roborave-soccer-standings.csv', csvStandings()));
+  on('#btnBackup', 'onclick', () => download('roborave-soccer-backup.json', JSON.stringify(Store.data, null, 1), 'application/json'));
+  on('#btnPreload', 'onclick', () => loadPreload(false));
+  on('#btnReset', 'onclick', () => {
+    const pin = (Store.data.settings || {}).pin;
+    if (pin && ($('#admPin') || {}).value !== pin) return toast(T('badPin'), 'err');
+    if (prompt(T('resetWarn')) !== 'RESET') return;
+    Store.set('m', null); Store.log(null, 'reset_all', ''); toast('OK', 'ok');
+  });
+  document.querySelectorAll('[data-copy]').forEach(b => b.onclick = () => {
+    const code = b.parentElement.querySelector('code').textContent;
+    navigator.clipboard.writeText(code).then(() => toast(T('copied'), 'ok'));
+  });
+  document.querySelectorAll('[data-edit]').forEach(b => b.onclick = () => editMatch(b.dataset.edit, refs));
+}
+
+function editMatch(id, refs) {
+  const m = MX[id], r = rec(id), h = slot(m, 'h', refs), a = slot(m, 'a', refs);
+  const hs = prompt(`${h.name} — ${T('goal')}`, r.hs); if (hs === null) return;
+  const as = prompt(`${a.name} — ${T('goal')}`, r.as); if (as === null) return;
+  const t = prompt(`${T('time')} (HH:MM)`, slotTime(m)); if (t === null) return;
+  const H = Math.max(0, Math.min(RULES.mercy * 2, Math.round(Number(hs) || 0))), A = Math.max(0, Math.min(RULES.mercy * 2, Math.round(Number(as) || 0)));
+  Store.update('m/' + id, { hs: H, as: A, st: 'F', w: H > A ? h.id : A > H ? a.id : 'D', j: ME.name, sb: new Date().toISOString(), hid: h.id, aid: a.id });
+  if (t && t !== slotTime(m)) Store.update('sched/' + id, { t, d: slotDate(m).slice(8), f: m.field });
+  Store.log(id, 'admin_edit', `${H}:${A} @${t}`);
+  toast('OK', 'ok');
+}
+
+function csvResults(refs) {
+  const head = ['MatchID', 'Date', 'Time', 'OrigTime', 'Field', 'Division', 'Stage', 'HomeRef', 'HomeID', 'HomeTeam',
+    'HomeGoal', 'AwayRef', 'AwayID', 'AwayTeam', 'AwayGoal', 'Result', 'WinnerID', 'WinnerTeam', 'Judge', 'Note', 'SubmittedAt'];
+  const lines = [head.join(',')];
+  for (const m of ordered()) {
+    const r = rec(m.id), h = slot(m, 'h', refs), a = slot(m, 'a', refs);
+    const res = r.st !== 'F' ? '' : r.w === 'D' ? 'DRAW' : r.w === h.id ? 'HOME' : 'AWAY';
+    lines.push([m.id, slotDate(m), slotTime(m), m.wasAt || '', m.field, m.division, m.stage, m.hr, h.id || '', h.ok ? h.name : '',
+      r.st === 'F' ? r.hs : '', m.ar, a.id || '', a.ok ? a.name : '', r.st === 'F' ? r.as : '', res,
+      r.w === 'D' ? '' : r.w || '', r.w && r.w !== 'D' ? (TM[r.w] || {}).name || '' : '', r.j, r.nt, r.sb].map(csvCell).join(','));
+  }
+  return lines.join('\r\n');
+}
+function csvStandings() {
+  const lines = ['Division,Rank,Seed,TeamID,TeamName,Country,Mentor,P,W,D,L,GF,GA,GD,Pts,LeagueOnly'];
+  const st = allStandings();
+  for (const d of ['ES', 'MS', 'HS'])
+    for (const r of st[d])
+      lines.push([d, r.rank, r.seed || '', r.id, r.name, r.country, r.mentor, r.p, r.w, r.d, r.l,
+        r.gf, r.ga, r.gd, r.pts, r.leagueOnly ? 'Y' : ''].map(csvCell).join(','));
+  return lines.join('\r\n');
+}
+
+// ── beep + clock loop ────────────────────────────────────────────────────────
+let actx = null;
+function beep(n) {
+  try {
+    actx = actx || new (window.AudioContext || window.webkitAudioContext)();
+    for (let i = 0; i < (n || 1); i++) {
+      const o = actx.createOscillator(), g = actx.createGain(), s = actx.currentTime + i * .28;
+      o.type = 'square'; o.frequency.value = 880;
+      g.gain.setValueAtTime(.001, s); g.gain.exponentialRampToValueAtTime(.22, s + .02);
+      g.gain.exponentialRampToValueAtTime(.001, s + .22);
+      o.connect(g); g.connect(actx.destination); o.start(s); o.stop(s + .24);
+    }
+  } catch (e) { }
+}
+const beeped = {};
+(function tick() {
+  const el = $('#clockT');
+  if (el && MX[selMatch]) {
+    const r = rec(selMatch), rem = remainOf(r);
+    el.textContent = fmt(rem);
+    el.className = 't' + (rem <= 5000 ? ' danger' : rem <= 15000 ? ' warn' : '');
+    const k = selMatch + ':' + r.pr;
+    if (r.rn && rem <= 0) {
+      if (!beeped[k]) {
+        beeped[k] = 1; beep(3);
+        if (ME.role === 'judge' || ME.role === 'admin') Store.update('m/' + selMatch, { rn: false, rm: 0, en: null });
+      }
+    } else if (rem > 1000) beeped[k] = 0;
+  }
+  document.querySelectorAll('[data-clock]').forEach(e => {
+    const r = rec(e.dataset.clock), rem = remainOf(r);
+    e.textContent = fmt(rem);
+    e.style.color = rem <= 5000 ? 'var(--live)' : rem <= 15000 ? 'var(--warn)' : '';
+  });
+  requestAnimationFrame(tick);
+})();
+
+// keyboard
+document.addEventListener('keydown', e => {
+  if (/^(INPUT|SELECT|TEXTAREA)$/.test(document.activeElement.tagName)) return;
+  if (ME.tab !== 'judge' || !selMatch) return;
+  const map = { q: ['home', 1], w: ['home', -1], o: ['away', 1], p: ['away', -1] };
+  const k = e.key.toLowerCase();
+  if (map[k]) { e.preventDefault(); const b = document.querySelector(`[data-goal="${map[k][0]}"][data-d="${map[k][1]}"]`); if (b && !b.disabled) b.click(); }
+  else if (e.code === 'Space') { e.preventDefault(); const b = $('#btnStart'); if (b && !b.disabled) b.click(); }
+});
+
+document.documentElement.lang = lang;
+applyStatic();
+initGate();
+
+</script>
+</body>
+</html>
