@@ -242,6 +242,9 @@ body.boardmode #btnLeave{color:#475569;border-color:#e2e8f0}
   .periodtabs button{padding:8px 16px}
   .gate{padding:20px 12px}
 }
+@media (max-width:420px){
+  .langbar button{padding:6px 7px;font-size:10.5px}
+}
 @media (max-width:400px){
   #app .tabs button{min-width:62px;font-size:11.5px}
   .board .teams{gap:8px}
@@ -322,6 +325,7 @@ const LANGS = [
   { code: 'ja', short: 'JA', label: '日本語' },
   { code: 'zh-TW', short: '繁中', label: '繁體中文' },
   { code: 'ko', short: 'KO', label: '한국어' },
+  { code: 'es', short: 'ES', label: 'Español' },
 ];
 
 const I18N = {
@@ -501,8 +505,51 @@ ko: {
   scoreEdit: '점수 수정', save: '저장', close: '닫기', leave: '나가기', mercyOn: '5점 콜드게임 적용',
   deadlineTitle: 'LSFC — 11:30 전 종료', deadlineNote: '08-12 LSFC 경기가 모두 11:30 전에 끝나도록 아래 경기를 앞당겼습니다.',
 },
+es: {
+  resetKept: 'Resultados del 11/8 restaurados; copia de seguridad descargada',
+  tabBoard: 'Panel de canchas', roleBoard: 'Panel de canchas', roleBoardD: '4 canchas en una pantalla — partido actual y siguiente', nextWaiting: 'Próximo partido — prepárense:',
+  event: 'RoboRAVE Osaka 2026', challenge: 'SoccerBot Remoto', hubTitle: 'Control de partidos',
+  roleAdmin: 'Administrador', roleAdminD: 'Calendario, posiciones, finales, exportar',
+  roleJudge: 'Juez', roleJudgeD: 'Cronómetro, goles, enviar resultados',
+  roleScreen: 'Marcador', roleScreenD: 'Pantalla de solo lectura para el público',
+  yourName: 'Su nombre', dbUrl: 'URL de Firebase DB', roomCode: 'Código del evento', adminPin: 'PIN de administrador',
+  myField: 'Mi cancha', allFields: 'Todas las canchas', testConn: 'Probar conexión', enter: 'Entrar',
+  offlineMode: '💾 Modo sin conexión (solo este equipo)',
+  gateHint: 'El enlace del juez ya incluye la URL y el código del evento — solo escriba su nombre y entre.',
+  connOk: '✅ Conexión correcta', connFail: '❌ No se puede conectar — revise la URL', needFields: 'Complete todos los campos',
+  badPin: 'PIN incorrecto', offlineOn: 'Modo sin conexión — solo este equipo, guardado en el navegador',
+  connected: 'Conectado', disconnected: 'Reconectando…', queued: 'sin conexión (%n en cola)',
+  tabJudge: 'Juez', tabScreen: 'Marcador', tabStandings: 'Posiciones', tabSchedule: 'Calendario',
+  tabPlayoff: 'Finales', tabSettings: 'Ajustes',
+  field: 'Cancha', division: 'Categoría', day: 'Día', time: 'Hora', match: 'Partido', all: 'Todos',
+  ES: 'Prim.', MS: 'Sec.', HS: 'Prep.', ESfull: 'Primaria', MSfull: 'Secundaria', HSfull: 'Preparatoria',
+  selectMatch: 'Seleccione un partido', noMatch: 'Ningún partido seleccionado', home: 'Local', away: 'Visitante',
+  firstHalf: '1er tiempo', secondHalf: '2º tiempo', start: 'INICIAR', pause: 'PAUSA', resume: 'REANUDAR',
+  nextHalf: 'Segundo tiempo', resetTimer: 'Reiniciar reloj', goal: 'GOL', undo: 'Deshacer',
+  submit: 'Enviar resultado', submitConfirm: '¿Enviar este resultado?', submitted: 'Resultado enviado',
+  note: 'Nota (opcional)', judgeName: 'Juez', reopen: 'Reabrir', reopenConfirm: '¿Reabrir este partido finalizado?',
+  finished: 'FINALIZADO', live: 'EN JUEGO', scheduled: 'Programado', pending: 'Pendiente', done: 'Completado',
+  draw: 'Empate', winner: 'Ganador', mercy: 'Fin anticipado — 5 goles alcanzados', tbd: 'Por definir',
+  knockoutNoDraw: 'Un partido eliminatorio no puede terminar en empate.',
+  nextUp: 'Próximos partidos', standings: 'Posiciones', rank: '#', team: 'Equipo', country: 'País', mentor: 'Mentor',
+  P: 'PJ', W: 'G', D: 'E', L: 'P', GF: 'GF', GA: 'GC', GD: 'DG', Pts: 'Pts',
+  league: 'Liga', semi: 'Semifinal', final: 'Final', third: '3er puesto', playoffs: 'Fase final',
+  first: '1er lugar', second: '2º lugar', thirdPlace: '3er lugar',
+  exportCsv: 'Resultados CSV', exportStandings: 'Posiciones CSV', backup: 'Copia de seguridad (JSON)',
+  resetAll: 'Restablecer todos los resultados', resetWarn: 'Borra todos los marcadores excepto los 13 partidos ya jugados el 11/8 (esos se reimportan). Se descarga una copia de seguridad automáticamente. Escriba RESET para confirmar.',
+  loadToday: 'Cargar resultados ya jugados', loadTodayD: 'Escribe los 13 partidos jugados el 11/8.',
+  leagueOnly: 'Solo liga', leagueOnlyNote: 'Los equipos LSFC solo juegan la liga y se omiten al sembrar las finales.',
+  leagueIncomplete: 'Liga sin terminar — las siembras aparecerán automáticamente al completarse.',
+  seedNote: 'Clasificado a las finales', moved: 'movido', wasAt: 'antes %s',
+  judgeLink: 'Enlace de juez', screenLink: 'Enlace del marcador', adminLink: 'Enlace de administrador', copy: 'Copiar', copied: 'Copiado',
+  progress: 'Avance', of: 'de', storage: 'Modo', online: 'Firebase (en línea)', offline: 'Sin conexión (este equipo)',
+  activity: 'Registro de actividad', people: 'Conectados', searchTeam: 'Buscar equipo…',
+  rule1: 'Primer tiempo 90 s · Segundo tiempo 90 s', rule2: 'El primero en anotar 5 goles gana de inmediato',
+  rule3: 'Victoria 3 · Empate 1 · Derrota 0 — la diferencia de goles cuenta máximo 5 por partido',
+  scoreEdit: 'Editar marcador', save: 'Guardar', close: 'Cerrar', leave: 'Salir', mercyOn: 'Regla de 5 goles',
+  deadlineTitle: 'LSFC — terminar antes de las 11:30', deadlineNote: 'Estos partidos se adelantaron para que todos los de LSFC terminen antes de las 11:30 del 12/8.',
+},
 };
-
 </script>
 <script>
 'use strict';
@@ -539,7 +586,7 @@ const PH = {
 // ── i18n ─────────────────────────────────────────────────────────────────────
 let lang = localStorage.getItem('rr26o.lang') ||
   (/^ko/.test(navigator.language) ? 'ko' : /^ja/.test(navigator.language) ? 'ja' :
-   /^zh/.test(navigator.language) ? 'zh-TW' : 'en');
+   /^zh/.test(navigator.language) ? 'zh-TW' : /^es/.test(navigator.language) ? 'es' : 'en');
 const T = k => (I18N[lang] && I18N[lang][k] != null) ? I18N[lang][k] : (I18N.en[k] != null ? I18N.en[k] : k);
 function setLang(c) {
   lang = c; localStorage.setItem('rr26o.lang', c); document.documentElement.lang = c;
@@ -758,6 +805,11 @@ function podium(div, refs) {
     if (r.st === 'F' && h && a && r.hs !== r.as) { p.first = r.hs > r.as ? h : a; p.second = r.hs > r.as ? a : h; } }
   if (t) { const r = rec(t.id), h = teamOf(t, 'h', refs), a = teamOf(t, 'a', refs);
     if (r.st === 'F' && h && a && r.hs !== r.as) p.third = r.hs > r.as ? h : a; }
+  else if (p.first) {
+    // division without a 3rd-place match (HS: final only) → 3rd = league seed rank 3
+    const row = standings(div).find(x => x.seed === 3);
+    if (row && leagueDone(div)) p.third = row.id;
+  }
   return p;
 }
 const stageLabel = s => T(s === 'league' ? 'league' : s);
