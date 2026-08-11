@@ -322,6 +322,7 @@ const LANGS = [
 
 const I18N = {
 en: {
+ resetKept: '8/11 results restored, backup downloaded',
   tabBoard: 'Venue Board', roleBoard: 'Venue Board', roleBoardD: '4 fields at a glance — current & next match', nextWaiting: 'Next up — please stand by:',
   event: 'RoboRAVE Osaka 2026', challenge: 'SoccerBot Remote', hubTitle: 'Match Control',
   roleAdmin: 'Admin', roleAdminD: 'Schedule, standings, play-offs, export',
@@ -351,7 +352,7 @@ en: {
   league: 'League', semi: 'Semi-final', final: 'Final', third: '3rd place', playoffs: 'Play-offs',
   first: '1st place', second: '2nd place', thirdPlace: '3rd place',
   exportCsv: 'Results CSV', exportStandings: 'Standings CSV', backup: 'Backup (JSON)',
-  resetAll: 'Reset all results', resetWarn: 'This erases every score. Type RESET to confirm.',
+  resetAll: 'Reset all results', resetWarn: 'Erases all scores except the 13 results already played on 8/11 (those are re-imported). A backup file downloads automatically. Type RESET to confirm.',
   loadToday: 'Load today’s played results', loadTodayD: 'Writes the 13 matches already played on 08-11.',
   leagueOnly: 'League only', leagueOnlyNote: 'LSFC teams play the league only and are skipped when seeding the play-offs.',
   leagueIncomplete: 'League not finished — seeds appear automatically once it is.',
@@ -365,6 +366,7 @@ en: {
   deadlineTitle: 'LSFC — finish before 11:30', deadlineNote: 'These matches were moved earlier so every LSFC match ends before 11:30 on 08-12.',
 },
 ja: {
+ resetKept: '8/11の結果は復元済み・バックアップ保存済み',
   tabBoard: '会場ボード', roleBoard: '会場ボード', roleBoardD: '4面の進行状況を一画面で表示', nextWaiting: '次の試合 — 待機してください：',
   event: 'RoboRAVE 大阪 2026', challenge: 'サッカーボット リモート', hubTitle: '試合運営',
   roleAdmin: '管理者', roleAdminD: '日程・順位表・決勝・出力',
@@ -394,7 +396,7 @@ ja: {
   league: 'リーグ戦', semi: '準決勝', final: '決勝', third: '3位決定戦', playoffs: '決勝トーナメント',
   first: '優勝', second: '準優勝', thirdPlace: '第3位',
   exportCsv: '結果CSV', exportStandings: '順位表CSV', backup: 'バックアップ(JSON)',
-  resetAll: '全結果をリセット', resetWarn: '全てのスコアが消去されます。RESET と入力してください。',
+  resetAll: '全結果をリセット', resetWarn: '8/11実施済み13試合以外の全スコアを消去します（8/11分は自動復元・バックアップ自動保存）。RESET と入力してください。',
   loadToday: '本日の実施済み結果を取込', loadTodayD: '08-11に実施済みの13試合を書き込みます。',
   leagueOnly: 'リーグ戦のみ', leagueOnlyNote: 'LSFCの各チームはリーグ戦のみ参加し、決勝シードからは除外されます。',
   leagueIncomplete: 'リーグ戦が未完了です。完了後に自動でシードが表示されます。',
@@ -408,6 +410,7 @@ ja: {
   deadlineTitle: 'LSFC — 11:30までに終了', deadlineNote: '08-12のLSFC全試合が11:30前に終わるよう、以下の試合を繰り上げました。',
 },
 'zh-TW': {
+ resetKept: '已還原 8/11 結果並下載備份',
   tabBoard: '賽場看板', roleBoard: '賽場看板', roleBoardD: '一頁同時顯示 4 個場地', nextWaiting: '下一場 — 請準備：',
   event: 'RoboRAVE 大阪 2026', challenge: '足球機器人 遠距賽', hubTitle: '賽事控制',
   roleAdmin: '管理', roleAdminD: '賽程、積分榜、決賽、匯出',
@@ -437,7 +440,7 @@ ja: {
   league: '循環賽', semi: '準決賽', final: '決賽', third: '季軍賽', playoffs: '決賽階段',
   first: '冠軍', second: '亞軍', thirdPlace: '季軍',
   exportCsv: '結果 CSV', exportStandings: '積分榜 CSV', backup: '備份 (JSON)',
-  resetAll: '重設所有結果', resetWarn: '將清除所有比分。請輸入 RESET 確認。',
+  resetAll: '重設所有結果', resetWarn: '將清除除 8/11 已賽 13 場以外的所有比分（8/11 自動還原、自動下載備份）。請輸入 RESET 確認。',
   loadToday: '匯入今日已賽結果', loadTodayD: '寫入 08-11 已完成的 13 場比賽。',
   leagueOnly: '僅循環賽', leagueOnlyNote: 'LSFC 各隊僅參加循環賽，排種子時會跳過。',
   leagueIncomplete: '循環賽尚未結束，完成後自動產生種子。',
@@ -451,6 +454,7 @@ ja: {
   deadlineTitle: 'LSFC — 11:30 前結束', deadlineNote: '為使 08-12 所有 LSFC 比賽於 11:30 前結束，已將下列比賽提前。',
 },
 ko: {
+ resetKept: '8/11 기록은 유지되고 백업이 저장되었습니다',
   tabBoard: '상황판', roleBoard: '경기 상황판', roleBoardD: '4개 경기장 현재·다음 경기를 한 화면에', nextWaiting: '다음 경기 대기선수:',
   event: '로보레이브 오사카 2026', challenge: '사커봇 리모트', hubTitle: '경기 운영',
   roleAdmin: '관리자', roleAdminD: '일정 · 순위표 · 결승 · 내보내기',
@@ -480,7 +484,7 @@ ko: {
   league: '리그전', semi: '준결승', final: '결승', third: '3·4위전', playoffs: '결승 토너먼트',
   first: '1위', second: '2위', thirdPlace: '3위',
   exportCsv: '결과 CSV', exportStandings: '순위표 CSV', backup: '전체 백업 (JSON)',
-  resetAll: '전체 결과 초기화', resetWarn: '모든 점수가 삭제됩니다. RESET 을 입력해 확인하세요.',
+  resetAll: '전체 결과 초기화', resetWarn: '8/11에 이미 진행된 13경기를 제외한 모든 점수가 삭제됩니다 (8/11 기록은 자동 복원, 백업 파일 자동 저장). RESET 을 입력해 확인하세요.',
   loadToday: '오늘 진행된 결과 불러오기', loadTodayD: '08-11에 이미 진행된 13경기를 서버에 기록합니다.',
   leagueOnly: '리그전만', leagueOnlyNote: 'LSFC 팀은 리그전만 참가하며, 결승 시드 배정 시 건너뜁니다.',
   leagueIncomplete: '리그전이 끝나지 않았습니다. 완료되면 시드가 자동 표시됩니다.',
@@ -638,15 +642,15 @@ const Store = {
 
 // ── mutable match record ─────────────────────────────────────────────────────
 function rec(id) {
-  const r = Store.data.m[id] || {};
+  const r = (Store.data.m || {})[id] || {};
   return {
     hs: r.hs || 0, as: r.as || 0, st: r.st || 'S', w: r.w || null, j: r.j || '', nt: r.nt || '',
     pr: r.pr || 1, rn: !!r.rn, en: r.en || null, rm: r.rm == null ? HALF_MS : r.rm,
     sb: r.sb || '', hid: r.hid || null, aid: r.aid || null,
   };
 }
-function slotTime(m) { const o = Store.data.sched[m.id]; return o && o.t ? o.t : m.time; }
-function slotField(m) { const o = Store.data.sched[m.id]; return o && o.f ? o.f : m.field; }
+function slotTime(m) { const o = (Store.data.sched || {})[m.id]; return o && o.t ? o.t : m.time; }
+function slotField(m) { const o = (Store.data.sched || {})[m.id]; return o && o.f ? o.f : m.field; }
 function slotDate(m) { const o = Store.data.sched[m.id]; return o && o.d ? '2026-08-' + o.d : m.date; }
 function ordered() {
   return MATCHES.slice().sort((a, b) =>
@@ -1336,7 +1340,14 @@ function wire(refs) {
     const pin = (Store.data.settings || {}).pin;
     if (pin && ($('#admPin') || {}).value !== pin) return toast(T('badPin'), 'err');
     if (prompt(T('resetWarn')) !== 'RESET') return;
-    Store.set('m', null); Store.log(null, 'reset_all', ''); toast('OK', 'ok');
+    // safety: auto-download a full backup before erasing anything
+    download('backup-before-reset-' + new Date().toISOString().replace(/[:.]/g, '-') + '.json',
+      JSON.stringify(Store.data, null, 1), 'application/json');
+    // keep played 8/11 results: clear everything, then re-import the day-1 records
+    Store.set('m', {});
+    setTimeout(() => loadPreload(true), 400);
+    Store.log(null, 'reset_all', 'day-1 results re-imported, backup downloaded');
+    toast('OK — ' + T('resetKept'), 'ok');
   });
   document.querySelectorAll('[data-copy]').forEach(b => b.onclick = () => {
     const code = b.parentElement.querySelector('code').textContent;
