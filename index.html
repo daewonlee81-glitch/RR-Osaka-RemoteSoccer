@@ -124,7 +124,7 @@ color:var(--txt);padding:12px 20px;border-radius:11px;font-weight:700;z-index:10
 .gate{max-width:620px;margin:0 auto;padding:34px 18px}
 .gate h1{font-size:clamp(24px,4vw,34px);margin:0 0 6px;text-align:center}
 .gate .sub{text-align:center;color:var(--dim);margin:0 0 24px;font-size:14px}
-.roles{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:18px}
+.roles{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px;margin-bottom:18px}
 @media(max-width:640px){.roles{grid-template-columns:1fr}}
 .role{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px;cursor:pointer;text-align:center}
 .role:hover{border-color:var(--accent)}
@@ -133,6 +133,41 @@ color:var(--txt);padding:12px 20px;border-radius:11px;font-weight:700;z-index:10
 .gate .fields{display:flex;flex-direction:column;gap:12px}
 code.k{background:var(--bg2);padding:2px 6px;border-radius:5px;font-family:var(--mono);font-size:12px;color:#a9c8ff;word-break:break-all}
 kbd{background:var(--bg2);border:1px solid var(--line);border-bottom-width:2px;border-radius:5px;padding:1px 6px;font-family:var(--mono);font-size:11.5px}
+/* ───────── venue board (light, 2×2) ───────── */
+body.boardmode{background:#fff}
+body.boardmode .topbar{background:#fff;border-color:#e2e8f0}
+body.boardmode .topbar .brand b,body.boardmode .topbar .brand span{color:#111}
+body.boardmode .tabs button{color:#475569}
+body.boardmode .tabs button.on{background:#f1f5f9;border-color:#cbd5e1;color:#111}
+body.boardmode .conn,body.boardmode #whoami{color:#64748b}
+body.boardmode .langbar{background:#f1f5f9;border-color:#e2e8f0}
+body.boardmode .langbar button{color:#64748b}
+body.boardmode .langbar button.on{background:#4f8cff;color:#fff}
+body.boardmode #btnLeave{color:#475569;border-color:#e2e8f0}
+.bd-wrap{height:calc(100vh - 57px);height:calc(100dvh - 57px);display:flex;flex-direction:column;padding:14px 22px 20px;gap:10px;color:#111}
+.bd-title{font-size:clamp(24px,3.4vw,44px);font-weight:900;text-align:center;color:#000;letter-spacing:-.5px}
+.bd-title .btn{float:right;color:#475569;border-color:#e2e8f0}
+.bd-grid{flex:1;display:grid;grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr;gap:26px;min-height:0;padding:10px 6px 0}
+.bd-cell{position:relative;border:3px solid #A5E86B;border-radius:10px;background:#fff;padding:34px 20px 16px;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;min-height:0}
+.bd-tag{position:absolute;top:-22px;left:50%;transform:translateX(-50%);background:#7ED348;color:#0b2e00;
+  font-weight:900;font-size:20px;line-height:1.05;padding:6px 40px;text-align:center;border-radius:3px}
+.bd-tag small{display:block;font-size:12px;font-weight:800}
+.bd-meta{display:flex;gap:10px;align-items:center;font-size:clamp(11px,1.2vw,15px);color:#64748b;font-weight:700}
+.bd-state{background:#f1f5f9;color:#475569;border-radius:999px;padding:2px 11px;font-size:11px;font-weight:800;text-transform:uppercase}
+.bd-state.live{background:#fee2e2;color:#dc2626;animation:pulse 1.6s infinite}
+.bd-teams{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:14px;width:100%}
+.bd-t{font-size:clamp(20px,2.6vw,40px);font-weight:900;line-height:1.12;text-align:center;color:#000;word-break:keep-all}
+.bd-score{font-family:var(--mono);font-size:clamp(30px,3.6vw,58px);font-weight:900;color:#000;white-space:nowrap}
+.bd-score i{font-style:normal;color:#94a3b8;padding:0 4px}
+.bd-clock{font-family:var(--mono);font-size:clamp(26px,3vw,46px);font-weight:800;color:#111}
+.bd-half{font-size:13px;color:#64748b;font-weight:800;letter-spacing:1px}
+.bd-idle{font-size:40px;color:#cbd5e1}
+.bd-next{font-size:clamp(13px,1.5vw,19px);color:#111;text-align:center}
+.bd-next b{font-weight:900}
+.bd-nlbl{color:#64748b;font-weight:700;margin-right:6px}
+.bd-ntime{color:#16a34a;font-weight:800;margin-left:6px}
+@media (max-width:900px){.bd-grid{grid-template-columns:1fr;grid-template-rows:none;overflow:auto}.bd-cell{padding-top:30px}}
 /* ───────── mobile (≤760px) ───────── */
 @media (max-width:760px){
   .topbar{backdrop-filter:none;-webkit-backdrop-filter:none;background:#0b1020;padding:8px 10px;gap:7px;flex-wrap:nowrap}
@@ -287,6 +322,7 @@ const LANGS = [
 
 const I18N = {
 en: {
+  tabBoard: 'Venue Board', roleBoard: 'Venue Board', roleBoardD: '4 fields at a glance — current & next match', nextWaiting: 'Next up — please stand by:',
   event: 'RoboRAVE Osaka 2026', challenge: 'SoccerBot Remote', hubTitle: 'Match Control',
   roleAdmin: 'Admin', roleAdminD: 'Schedule, standings, play-offs, export',
   roleJudge: 'Judge', roleJudgeD: 'Timer, goals, submit results',
@@ -329,6 +365,7 @@ en: {
   deadlineTitle: 'LSFC — finish before 11:30', deadlineNote: 'These matches were moved earlier so every LSFC match ends before 11:30 on 08-12.',
 },
 ja: {
+  tabBoard: '会場ボード', roleBoard: '会場ボード', roleBoardD: '4面の進行状況を一画面で表示', nextWaiting: '次の試合 — 待機してください：',
   event: 'RoboRAVE 大阪 2026', challenge: 'サッカーボット リモート', hubTitle: '試合運営',
   roleAdmin: '管理者', roleAdminD: '日程・順位表・決勝・出力',
   roleJudge: '審判', roleJudgeD: 'タイマー・得点・結果送信',
@@ -371,6 +408,7 @@ ja: {
   deadlineTitle: 'LSFC — 11:30までに終了', deadlineNote: '08-12のLSFC全試合が11:30前に終わるよう、以下の試合を繰り上げました。',
 },
 'zh-TW': {
+  tabBoard: '賽場看板', roleBoard: '賽場看板', roleBoardD: '一頁同時顯示 4 個場地', nextWaiting: '下一場 — 請準備：',
   event: 'RoboRAVE 大阪 2026', challenge: '足球機器人 遠距賽', hubTitle: '賽事控制',
   roleAdmin: '管理', roleAdminD: '賽程、積分榜、決賽、匯出',
   roleJudge: '裁判', roleJudgeD: '計時、得分、送出結果',
@@ -413,6 +451,7 @@ ja: {
   deadlineTitle: 'LSFC — 11:30 前結束', deadlineNote: '為使 08-12 所有 LSFC 比賽於 11:30 前結束，已將下列比賽提前。',
 },
 ko: {
+  tabBoard: '상황판', roleBoard: '경기 상황판', roleBoardD: '4개 경기장 현재·다음 경기를 한 화면에', nextWaiting: '다음 경기 대기선수:',
   event: '로보레이브 오사카 2026', challenge: '사커봇 리모트', hubTitle: '경기 운영',
   roleAdmin: '관리자', roleAdminD: '일정 · 순위표 · 결승 · 내보내기',
   roleJudge: '심사위원', roleJudgeD: '타이머 · 득점 · 결과 전송',
@@ -707,7 +746,7 @@ const qp = new URLSearchParams(location.search);
 
 function initGate() {
   mountLang($('#gLang'));
-  const roles = [['admin', '🛠'], ['judge', '⏱'], ['screen', '📺']];
+  const roles = [['admin', '🛠'], ['judge', '⏱'], ['screen', '📺'], ['board', '📊']];
   ME.role = qp.get('role') || localStorage.getItem('rr26o.role') || 'judge';
   const host = $('#roles');
   const paint = () => {
@@ -780,7 +819,7 @@ async function enter(offline) {
 
   Store.cb = render;
   $('#gate').classList.add('hidden'); $('#app').classList.remove('hidden');
-  ME.tab = ME.role === 'screen' ? 'screen' : ME.role === 'admin' ? 'standings' : 'judge';
+  ME.tab = ME.role === 'screen' ? 'screen' : ME.role === 'board' ? 'board' : ME.role === 'admin' ? 'standings' : 'judge';
   buildTopbar(); applyStatic(); render(); paintConn();
   if (ME.role === 'screen') document.body.style.overflow = 'hidden';
 }
@@ -802,9 +841,10 @@ function buildTopbar() {
   mountLang($('#langbar'));
   $('#whoami').textContent = ME.name + ' · ' + T('role' + ME.role[0].toUpperCase() + ME.role.slice(1)) +
     (ME.field ? ' · ' + T('field') + ' ' + ME.field : '');
-  const tabs = ME.role === 'screen' ? [['screen', 'tabScreen'], ['standings', 'tabStandings']]
+  const tabs = ME.role === 'screen' ? [['screen', 'tabScreen'], ['board', 'tabBoard'], ['standings', 'tabStandings']]
+    : ME.role === 'board' ? [['board', 'tabBoard'], ['screen', 'tabScreen'], ['standings', 'tabStandings']]
     : ME.role === 'judge' ? [['judge', 'tabJudge'], ['screen', 'tabScreen'], ['standings', 'tabStandings'], ['schedule', 'tabSchedule']]
-    : [['standings', 'tabStandings'], ['schedule', 'tabSchedule'], ['playoff', 'tabPlayoff'], ['judge', 'tabJudge'], ['screen', 'tabScreen'], ['settings', 'tabSettings']];
+    : [['standings', 'tabStandings'], ['schedule', 'tabSchedule'], ['playoff', 'tabPlayoff'], ['judge', 'tabJudge'], ['screen', 'tabScreen'], ['board', 'tabBoard'], ['settings', 'tabSettings']];
   $('#tabs').innerHTML = tabs.map(([k, l]) => `<button data-tab="${k}" class="${ME.tab === k ? 'on' : ''}">${T(l)}</button>`).join('');
   $('#tabs').querySelectorAll('button').forEach(b => b.onclick = () => { ME.tab = b.dataset.tab; buildTopbar(); render(); });
   $('#btnLeave').onclick = () => { location.href = location.pathname; };
@@ -824,6 +864,7 @@ function render() {
   const v = $('#view');
   const refs = resolveRefs();
   document.body.classList.toggle('screenmode', ME.tab === 'screen');
+  document.body.classList.toggle('boardmode', ME.tab === 'board');
   $('#topbar').classList.toggle('hidden', false);
   if (ME.tab === 'judge') v.innerHTML = viewJudge(refs);
   else if (ME.tab === 'screen') v.innerHTML = viewScreen(refs);
@@ -831,6 +872,7 @@ function render() {
   else if (ME.tab === 'schedule') v.innerHTML = viewSchedule(refs);
   else if (ME.tab === 'playoff') v.innerHTML = viewPlayoff(refs);
   else if (ME.tab === 'settings') v.innerHTML = viewSettings();
+  else if (ME.tab === 'board') v.innerHTML = viewBoard(refs);
   wire(refs);
   applyStatic();
   paintConn();
@@ -1010,6 +1052,44 @@ function viewScreen(refs) {
         <h2 style="margin-top:14px">${T('standings')}</h2><div style="overflow:auto">${mini}</div>
       </div>
     </div></div></div>`;
+}
+
+// ── VENUE BOARD (2×2, light theme, PC wall display) ──────────────────────────
+function viewBoard(refs) {
+  const om = ordered();
+  const quad = ['A', 'B', 'C', 'D'].map(f => {
+    const pool = om.filter(m => slotField(m) === f);
+    const live = pool.filter(m => rec(m.id).st === 'L')
+      .sort((x, y) => ((rec(y.id).rn ? 1 : 0) - (rec(x.id).rn ? 1 : 0)))[0];
+    const pending = pool.filter(m => rec(m.id).st !== 'F' && (!live || m.id !== live.id));
+    const cur = live || pending[0] || null;
+    const nxt = pending.find(m => cur && m.id !== cur.id) || null;
+    let curHtml = `<div class="bd-idle">—</div>`;
+    if (cur) {
+      const r = rec(cur.id), h = slot(cur, 'h', refs), a = slot(cur, 'a', refs);
+      const isLive = r.st === 'L';
+      curHtml = `
+        <div class="bd-meta"><span>${slotTime(cur)} · ${T(cur.division)} · ${stageLabel(cur.stage)}</span>
+          <span class="bd-state ${isLive ? 'live' : ''}">${T(isLive ? 'live' : 'scheduled')}</span></div>
+        <div class="bd-teams">
+          <div class="bd-t">${esc(h.name)}</div>
+          <div class="bd-score">${isLive ? `${r.hs}<i>:</i>${r.as}` : 'vs'}</div>
+          <div class="bd-t">${esc(a.name)}</div>
+        </div>
+        ${isLive ? `<div class="bd-clock" data-clock="${cur.id}">${fmt(remainOf(r))}</div>
+        <div class="bd-half">${T(r.pr === 2 ? 'secondHalf' : 'firstHalf')}</div>` : ''}`;
+    }
+    const nxtHtml = nxt
+      ? (() => { const h = slot(nxt, 'h', refs), a = slot(nxt, 'a', refs);
+          return `<div class="bd-next"><span class="bd-nlbl">${T('nextWaiting')}</span>
+            <b>${esc(h.name)}</b> vs <b>${esc(a.name)}</b> <span class="bd-ntime">${slotTime(nxt)}</span></div>`; })()
+      : `<div class="bd-next"><span class="bd-nlbl">${T('nextWaiting')}</span> —</div>`;
+    return `<div class="bd-cell"><div class="bd-tag">${f}<small>${T('field')}</small></div>${curHtml}${nxtHtml}</div>`;
+  }).join('');
+  return `<div class="bd-wrap">
+    <div class="bd-title">RoboRAVE-OSAKA, Soccer Remote
+      <button class="btn ghost" id="btnFs" style="float:right">⛶</button></div>
+    <div class="bd-grid">${quad}</div></div>`;
 }
 
 // ── STANDINGS ────────────────────────────────────────────────────────────────
