@@ -19,7 +19,7 @@ background:rgba(11,16,32,.85);backdrop-filter:blur(10px);position:sticky;top:0;z
 .brand{display:flex;flex-direction:column;line-height:1.15}.brand b{font-size:14px}.brand span{font-size:11px;color:var(--dim)}
 .spacer{flex:1}
 .langbar{display:flex;gap:3px;background:var(--card);padding:3px;border-radius:999px;border:1px solid var(--line)}
-.langbar button{border:0;background:transparent;color:var(--dim);padding:5px 11px;border-radius:999px;cursor:pointer;font-size:12.5px;font-weight:700}
+.langbar button{border:0;background:transparent;color:var(--dim);padding:5px 11px;border-radius:999px;cursor:pointer;font-size:12.5px;font-weight:700;white-space:nowrap}
 .langbar button.on{background:var(--accent);color:#fff}
 .tabs{display:flex;gap:5px}
 .tabs button{padding:7px 13px;border-radius:9px;font-size:13px;font-weight:700;color:var(--dim);border:1px solid transparent;background:transparent;cursor:pointer}
@@ -171,7 +171,22 @@ body.boardmode #btnLeave{color:#475569;border-color:#e2e8f0}
 .bd-next b{font-weight:900}
 .bd-nlbl{color:#64748b;font-weight:700;margin-right:6px}
 .bd-ntime{color:#16a34a;font-weight:800;margin-left:6px}
-@media (max-width:900px){.bd-grid{grid-template-columns:1fr;grid-template-rows:none;overflow:auto}.bd-cell{padding-top:30px}}
+@media (max-width:900px){
+  .bd-wrap{height:auto;min-height:0;padding:10px 12px 90px}
+  .bd-title{font-size:22px}
+  .bd-title .btn{display:none}
+  .bd-grid{grid-template-columns:1fr;grid-template-rows:none;gap:14px;overflow:visible;padding:0}
+  .bd-cell{padding:12px 12px 14px;gap:8px;justify-content:flex-start}
+  .bd-tag{position:static;transform:none;align-self:center;display:flex;gap:6px;align-items:baseline;
+    padding:3px 22px;font-size:15px;margin:-24px auto 2px;border-radius:4px}
+  .bd-tag small{display:inline;font-size:11px}
+  .bd-teams{gap:8px}
+  .bd-t{font-size:17px}
+  .bd-score{font-size:26px}
+  .bd-clock{font-size:30px}
+  .bd-idle{font-size:26px;padding:8px 0}
+  .bd-next{font-size:13px;line-height:1.5}
+}
 /* ───────── mobile (≤760px) ───────── */
 @media (max-width:760px){
   .topbar{backdrop-filter:none;-webkit-backdrop-filter:none;background:#0b1020;padding:8px 10px;gap:7px;flex-wrap:nowrap}
