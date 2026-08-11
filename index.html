@@ -156,13 +156,38 @@ kbd{background:var(--bg2);border:1px solid var(--line);border-bottom-width:2px;b
     padding:6px 4px calc(6px + env(safe-area-inset-bottom));overflow-x:auto}
   #app .tabs button{flex:1 0 auto;min-width:72px;padding:11px 6px;font-size:12.5px;border-radius:9px;white-space:nowrap}
   #app #view{padding-bottom:76px}
-  /* judge: single column, shorter list */
-  #jcols{grid-template-columns:1fr !important}
+  /* judge: panel first, one-screen control pad */
+  #jcols{grid-template-columns:1fr !important;gap:10px}
+  #jcols{display:flex;flex-direction:column}
+  #jlist{order:2}
+  #jpanel{order:1}
   .matchlist{max-height:34vh}
   .mrow{padding:11px 9px}
-  .clock{min-width:0}
-  .side .sc{font-size:clamp(52px,20vw,88px)}
-  .goalbtn{padding:20px;font-size:20px}
+  /* two team pads side by side, clock full-width below */
+  .matchbar{display:grid !important;grid-template-columns:1fr 1fr;grid-template-areas:"h a" "c c";gap:8px;margin-top:8px !important}
+  .side.h{grid-area:h}.side.a{grid-area:a}.clock{grid-area:c;min-width:0;padding:10px}
+  .side{padding:10px 8px;gap:5px;border-radius:12px}
+  .side .lbl{font-size:9.5px;letter-spacing:.8px}
+  .side .tname{font-size:15px;line-height:1.15;min-height:2.3em;display:flex;align-items:center;justify-content:center}
+  .side .tmeta{display:none}
+  .side .sc{font-size:46px}
+  .goalbtn{padding:14px;font-size:17px}
+  .side .btn.ghost{padding:7px;font-size:13px}
+  .clock{flex-direction:row;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:8px}
+  .clock .periodtabs{order:1}
+  .clock .t{order:2;font-size:40px;letter-spacing:-1px;margin-left:auto}
+  .clock .row{margin:0}
+  .clock .row:has(#btnStart){order:3;flex-basis:100%}
+  .clock .row:has(#btnStart) .btn{flex:1;padding:14px;font-size:17px}
+  .clock .row:has(#btnNext){order:4;flex-basis:100%;justify-content:center}
+  .clock .row:has(#btnNext) .btn{padding:8px 14px;font-size:12.5px}
+  .clock .tiny{display:none}
+  .periodtabs button{padding:6px 12px;font-size:12px}
+  /* compact match header + banner + submit row */
+  #jpanel>.card:first-child{padding:8px 10px;margin-bottom:8px !important}
+  .banner{padding:8px 10px;font-size:13px;margin-top:8px}
+  #jpanel>.card:last-child{padding:10px;margin-top:8px !important}
+  #jpanel>.card:last-child label.fld span{display:none}
   /* scoreboard: boards above, panel below, keep scrollable */
   .sc-wrap{height:auto;min-height:100dvh;overflow:auto;padding:10px 10px 80px}
   .sc-main{display:block;min-height:0;flex:none}
@@ -832,7 +857,7 @@ function viewJudge(refs) {
   }).join('') || `<p class="muted tiny center" style="padding:18px">—</p>`;
 
   return `<div class="wrap"><div class="grid" style="grid-template-columns:330px 1fr;align-items:start" id="jcols">
-    <div class="card">
+    <div class="card" id="jlist">
       <h2>${T('selectMatch')}</h2>
       <div class="row" style="margin-bottom:9px">
         <label class="fld" style="flex:1"><span>${T('field')}</span>
@@ -1152,7 +1177,7 @@ function wire(refs) {
 
   document.querySelectorAll('.mrow').forEach(e => e.onclick = () => {
     selMatch = e.dataset.mid; localStorage.setItem('rr26o.match', selMatch);
-    if (window.innerWidth < 760) setTimeout(() => { const p = document.getElementById('jpanel'); if (p) p.scrollIntoView({ behavior: 'smooth', block: 'start' }); }, 60);
+    if (window.innerWidth < 760) setTimeout(() => window.scrollTo({ top: 0, behavior: 'smooth' }), 60);
     const p = $('#jpanel'); if (p) { p.innerHTML = panelJudge(resolveRefs(), ME.role !== 'screen'); wire(resolveRefs()); }
     document.querySelectorAll('.mrow').forEach(x => x.classList.toggle('on', x.dataset.mid === selMatch));
   });
@@ -1207,6 +1232,11 @@ function wire(refs) {
       });
       Store.log(m.id, 'submit', `${c.hs}:${c.as}`);
       toast(T('submitted'), 'ok'); beep(2);
+      setTimeout(() => {                       // auto-advance to the next pending match on my field
+        const f = ME.field || localStorage.getItem('rr26o.jf') || '';
+        const n = ordered().find(x => x.stage === 'league' && rec(x.id).st !== 'F' && (!f || slotField(x) === f) && x.id !== m.id);
+        if (n) { selMatch = n.id; localStorage.setItem('rr26o.match', n.id); render(); window.scrollTo({ top: 0 }); }
+      }, 900);
     });
     on('#btnReopen', 'onclick', () => {
       if (!confirm(T('reopenConfirm'))) return;
