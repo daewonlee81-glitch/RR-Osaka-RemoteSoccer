@@ -248,7 +248,7 @@ kbd{background:var(--bg2);border:1px solid var(--line);border-bottom-width:2px;b
 </script>
 <script>
 const TEAM_ROWS = [["SRE14","FLC","Taiwan","PAN, MING-JU","ES","T171"],["SRE13","LSFC Dinos","Korea","JANG UKYONG","ES","T035"],["SRE11","LSFC Tigers","Korea","JANG UKYONG","ES","T036"],["SRE03","LSFC Dragons","Korea","JANG UKYONG","ES","T037"],["SRE01","LSFC Bears","Korea","JANG UKYONG","ES","T038"],["SRE02","GPFC A","Korea","LEE BOHYUN","ES","T049"],["SRE12","GPFC B","Korea","LEE BOHYUN","ES","T050"],["SRE04","Soccer Master","Taiwan","CHUANG, SHENG-WEN","ES","T181"],["SRE05","QQ3","Taiwan","HO MINGLIANG","ES","T184"],["SRE08","QQ4","Taiwan","HO MINGLIANG","ES","T185"],["SRE09","Dragon","Taiwan","HSUEH, YU-YIN","ES","T203"],["SRE10","Apex-X","Taiwan","LIN TING-YAN","ES","T204"],["SRE06","Atlas Junior","Bangladesh","Sunny Jubayer","ES","T268"],["SRE07","Mo-Salah","Egypt","Taghrid Aly","ES","T277"],["SRH01","ALL IS WELL","Taiwan","WENG, CHENG-HSIAO","HS","T190"],["SRH02","DMAXS-MX","Mexico","","HS","T143"],["SRH03","Hello","Thailand","Chaiwat Pornwattananukool","HS","T111"],["SRH04","Made in R4K","Thailand","Chaiwat Pornwattananukool","HS","T110"],["SRH05","R4K United","Thailand","Chaiwat Pornwattananukool","HS","T114"],["SRH06","Warriors","Taiwan","LIAO, CHIEN-CHIH","HS","T207"],["SRH07","Egypt 2","Egypt","MIRETTE SAMY ABDRABO NAZER","HS","T280"],["SRM07","LSFC Eagles","Korea","JANG UKYONG","MS","T039"],["SRM11","GPFC C","Korea","LEE BOHYUN","MS","T051"],["SRM09","GPFC D","Korea","LEE BOHYUN","MS","T052"],["SRM10","GPFC E","Korea","LEE BOHYUN","MS","T053"],["SRM12","The Accidental Geniuses 01","Taiwan","WENG, CHENG-HSIAO","MS","T191"],["SRM06","The Accidental Geniuses 02","Taiwan","WENG, CHENG-HSIAO","MS","T192"],["SRM04","Running Boyz","Taiwan","WANG, YI-TANG","MS","T196"],["SRM08","Hacker","Taiwan","LIAO, CHIEN-CHIH","MS","T208"],["SRM03","BAYMAX6","Egypt","mohamed hany","MS","T273"],["SRM01","roboheros","Egypt","mohamed tarek","MS","T274"],["SRM05","The Egyptian Pharos","Egypt","Mohamed Abdelhamid Aboelnaga","MS","T276"]];
-const SCHED_ROWS = [["M001","11","13:00","A","L","SRE09","SRE11",""],["M002","11","13:00","B","L","SRM01","SRM12",""],["M003","11","13:00","C","L","SRH01","SRH02",""],["M004","11","13:06","A","L","SRE01","SRE12",""],["M005","11","13:06","B","L","SRM03","SRM04",""],["M006","11","13:12","A","L","SRE06","SRE08",""],["M007","11","13:12","C","L","SRH03","SRH05",""],["M008","11","13:18","A","L","SRE03","SRE04",""],["M009","11","13:18","B","L","SRM06","SRM08",""],["M010","11","13:24","A","L","SRE10","SRE13",""],["M011","11","13:24","B","L","SRM10","SRM11",""],["M012","11","13:24","C","L","SRH04","SRH07",""],["M013","11","13:30","A","L","SRE05","SRE07",""],["M014","11","13:36","B","L","SRM09","SRM12",""],["M015","11","13:42","A","L","SRE02","SRE14",""],["M016","11","13:42","B","L","SRM03","SRM05",""],["M017","11","13:42","C","L","SRH01","SRH06",""],["M018","11","13:48","A","L","SRE09","SRE12",""],["M019","11","13:54","A","L","SRE03","SRE06",""],["M020","11","13:54","B","L","SRM06","SRM07",""],["M021","11","13:54","C","L","SRH02","SRH03",""],["M022","11","14:00","A","L","SRE08","SRE10",""],["M023","11","14:00","B","L","SRM01","SRM10",""],["M024","11","14:06","A","L","SRE11","SRE13",""],["M025","11","14:06","C","L","SRH05","SRH07",""],["M026","11","14:12","B","L","SRM04","SRM12",""],["M027","11","14:18","A","L","SRE04","SRE05",""],["M028","11","14:18","B","L","SRM09","SRM11",""],["M029","11","14:24","A","L","SRE01","SRE02",""],["M030","11","14:24","C","L","SRH04","SRH06",""],["M031","11","14:30","A","L","SRE06","SRE07",""],["M032","11","14:30","B","L","SRM03","SRM06",""],["M033","11","14:36","A","L","SRE12","SRE14",""],["M034","11","14:36","B","L","SRM08","SRM10",""],["M035","11","14:36","C","L","SRH01","SRH05",""],["M036","11","14:42","A","L","SRE08","SRE09",""],["M037","11","14:48","B","L","SRM04","SRM05",""],["M038","11","14:54","A","L","SRE10","SRE11",""],["M039","11","14:54","B","L","SRM07","SRM09",""],["M040","11","14:54","C","L","SRH02","SRH06",""],["M041","11","15:00","A","L","SRE03","SRE05",""],["M042","11","15:06","A","L","SRE04","SRE07",""],["M043","11","15:06","B","L","SRM01","SRM11",""],["M044","11","15:06","C","L","SRH01","SRH07",""],["M045","11","15:12","A","L","SRE02","SRE13",""],["M046","11","15:12","B","L","SRM03","SRM12",""],["M047","11","15:18","A","L","SRE01","SRE14",""],["M048","11","15:18","C","L","SRH03","SRH04",""],["M049","11","15:24","B","L","SRM05","SRM06",""],["M050","11","15:30","A","L","SRE11","SRE12",""],["M051","11","15:30","B","L","SRM07","SRM08",""],["M052","11","15:36","A","L","SRE09","SRE10",""],["M053","11","15:36","C","L","SRH02","SRH05",""],["M054","11","15:42","A","L","SRE07","SRE08",""],["M055","11","15:42","B","L","SRM09","SRM10",""],["M056","11","15:48","A","L","SRE04","SRE06",""],["M057","11","15:48","B","L","SRM01","SRM04",""],["M058","11","15:48","C","L","SRH06","SRH07",""],["M059","11","15:54","A","L","SRE03","SRE14",""],["M060","12","09:10","A","L","SRE01","SRE13","10:00"],["M066","12","09:10","B","L","SRM07","SRM10","10:18"],["M062","12","09:10","C","L","SRH01","SRH04","10:00"],["M070","12","09:10","D","L","SRE08","SRE11","A 10:30"],["M064","12","09:16","A","L","SRE02","SRE05","10:12"],["M061","12","09:16","B","L","SRM11","SRM12","10:00"],["M067","12","09:16","C","L","SRH03","SRH07","10:18"],["M065","12","09:16","D","L","SRE10","SRE12","A 10:18"],["M072","12","09:22","A","L","SRE13","SRE14","10:36"],["M078","12","09:22","B","L","SRM05","SRM07","10:54"],["M071","12","09:22","C","L","SRH04","SRH05","10:30"],["M077","12","09:22","D","L","SRE01","SRE03","A 10:54"],["M068","12","09:28","A","L","SRE07","SRE09","10:24"],["M069","12","09:28","B","L","SRM06","SRM09","10:24"],["M076","12","09:28","C","L","SRH03","SRH06","10:48"],["M075","12","09:28","D","L","SRE05","SRE06","A 10:48"],["M083","12","09:34","A","L","SRE12","SRE13","11:12"],["M096","12","09:34","B","L","SRM04","SRM07","11:48"],["M081","12","09:34","C","L","SRH02","SRH07","11:00"],["M087","12","09:34","D","L","SRE11","SRE14","A 11:24"],["M093","12","09:40","A","L","SRE02","SRE03","11:42"],["M063","12","09:40","B","L","SRM05","SRM08","10:06"],["M085","12","09:40","C","L","SRH01","SRH03","11:12"],["M095","12","09:40","D","L","SRE01","SRE04","A 11:48"],["M082","12","09:46","A","L","SRE07","SRE10","11:06"],["M073","12","09:46","B","L","SRM01","SRM03","10:36"],["M090","12","09:46","C","L","SRH05","SRH06","11:30"],["M088","12","09:46","D","L","SRE06","SRE09","A 11:30"],["M079","12","09:52","A","L","SRE02","SRE04","11:00"],["M074","12","09:52","B","L","SRM08","SRM11","10:42"],["M094","12","09:52","C","L","SRH02","SRH04","11:42"],["M091","12","09:52","D","L","SRE05","SRE08","A 11:36"],["M080","12","09:58","B","L","SRM04","SRM06","11:00"],["M084","12","10:04","B","L","SRM10","SRM12","11:12"],["M086","12","10:10","B","L","SRM08","SRM09","11:18"],["M089","12","10:16","B","L","SRM03","SRM11","11:30"],["M092","12","10:22","B","L","SRM01","SRM05","11:36"],["M097","12","13:00","A","S","SRES2","SRES3",""],["M098","12","13:06","A","S","SRES1","SRES4",""],["M099","12","13:12","B","S","SRMS2","SRMS3",""],["M100","12","13:18","B","S","SRMS1","SRMS4",""],["M101","12","13:42","C","T","SREF3","SREF4",""],["M102","12","13:48","C","T","SRMF3","SRMF4",""],["M103","12","14:06","A","F","SRHF1","SRHF2",""],["M104","12","14:18","B","F","SREF1","SREF2",""],["M105","12","14:30","C","F","SRMF1","SRMF2",""]];
+const SCHED_ROWS = [["M001","11","13:00","A","L","SRE09","SRE11",""],["M002","11","13:00","B","L","SRM01","SRM12",""],["M003","11","13:00","C","L","SRH01","SRH02",""],["M004","11","13:06","A","L","SRE01","SRE12",""],["M005","11","13:06","B","L","SRM03","SRM04",""],["M006","11","13:12","A","L","SRE06","SRE08",""],["M007","11","13:12","C","L","SRH03","SRH05",""],["M010","11","13:24","A","L","SRE10","SRE13",""],["M011","11","13:24","B","L","SRM10","SRM11",""],["M012","11","13:24","C","L","SRH04","SRH07",""],["M013","11","13:30","A","L","SRE05","SRE07",""],["M015","11","13:42","A","L","SRE02","SRE14",""],["M016","11","13:42","B","L","SRM03","SRM05",""],["M008","12","09:10","A","L","SRE03","SRE04","8/11 13:18"],["M020","12","09:10","B","L","SRM06","SRM07","8/11 13:54"],["M029","12","09:10","C","L","SRE01","SRE02","8/11 A 14:24"],["M024","12","09:10","D","L","SRE11","SRE13","8/11 A 14:06"],["M018","12","09:16","A","L","SRE09","SRE12","8/11 13:48"],["M086","12","09:16","B","L","SRM08","SRM09","11:18"],["M017","12","09:16","C","L","SRH01","SRH06","8/11 13:42"],["M021","12","09:16","D","L","SRH02","SRH03","8/11 C 13:54"],["M022","12","09:22","A","L","SRE08","SRE10","8/11 14:00"],["M023","12","09:22","B","L","SRM01","SRM10","8/11 14:00"],["M025","12","09:22","C","L","SRH05","SRH07","8/11 14:06"],["M026","12","09:22","D","L","SRM04","SRM12","8/11 B 14:12"],["M019","12","09:28","A","L","SRE03","SRE06","8/11 13:54"],["M078","12","09:28","B","L","SRM05","SRM07","10:54"],["M045","12","09:28","C","L","SRE02","SRE13","8/11 A 15:12"],["M047","12","09:28","D","L","SRE01","SRE14","8/11 A 15:18"],["M050","12","09:34","A","L","SRE11","SRE12","8/11 15:30"],["M009","12","09:34","B","L","SRM06","SRM08","8/11 13:18"],["M028","12","09:34","C","L","SRM09","SRM11","8/11 B 14:18"],["M027","12","09:34","D","L","SRE04","SRE05","8/11 A 14:18"],["M054","12","09:40","A","L","SRE07","SRE08","8/11 15:42"],["M035","12","09:40","B","L","SRH01","SRH05","8/11 C 14:36"],["M030","12","09:40","C","L","SRH04","SRH06","8/11 14:24"],["M046","12","09:40","D","L","SRM03","SRM12","8/11 B 15:12"],["M059","12","09:46","A","L","SRE03","SRE14","8/11 15:54"],["M066","12","09:46","B","L","SRM07","SRM10","10:18"],["M037","12","09:46","C","L","SRM04","SRM05","8/11 B 14:48"],["M060","12","09:46","D","L","SRE01","SRE13","A 10:00"],["M038","12","09:52","A","L","SRE10","SRE11","8/11 14:54"],["M043","12","09:52","B","L","SRM01","SRM11","8/11 15:06"],["M067","12","09:52","C","L","SRH03","SRH07","10:18"],["M056","12","09:52","D","L","SRE04","SRE06","8/11 A 15:48"],["M068","12","09:58","A","L","SRE07","SRE09","10:24"],["M069","12","09:58","B","L","SRM06","SRM09","10:24"],["M040","12","09:58","C","L","SRH02","SRH06","8/11 14:54"],["M062","12","09:58","D","L","SRH01","SRH04","C 10:00"],["M041","12","10:04","A","L","SRE03","SRE05","8/11 15:00"],["M051","12","10:04","B","L","SRM07","SRM08","8/11 15:30"],["M084","12","10:04","C","L","SRM10","SRM12","B 11:12"],["M072","12","10:04","D","L","SRE13","SRE14","A 10:36"],["M070","12","10:10","A","L","SRE08","SRE11","10:30"],["M057","12","10:10","B","L","SRM01","SRM04","8/11 15:48"],["M065","12","10:10","C","L","SRE10","SRE12","A 10:18"],["M095","12","10:10","D","L","SRE01","SRE04","A 11:48"],["M031","12","10:16","A","L","SRE06","SRE07","8/11 14:30"],["M032","12","10:16","B","L","SRM03","SRM06","8/11 14:30"],["M048","12","10:16","C","L","SRH03","SRH04","8/11 15:18"],["M053","12","10:16","D","L","SRH02","SRH05","8/11 C 15:36"],["M093","12","10:22","A","L","SRE02","SRE03","11:42"],["M039","12","10:22","B","L","SRM07","SRM09","8/11 14:54"],["M058","12","10:22","C","L","SRH06","SRH07","8/11 15:48"],["M063","12","10:22","D","L","SRM05","SRM08","B 10:06"],["M083","12","10:28","A","L","SRE12","SRE13","11:12"],["M036","12","10:28","B","L","SRE08","SRE09","8/11 A 14:42"],["M061","12","10:28","C","L","SRM11","SRM12","B 10:00"],["M087","12","10:28","D","L","SRE11","SRE14","A 11:24"],["M075","12","10:34","A","L","SRE05","SRE06","10:48"],["M073","12","10:34","B","L","SRM01","SRM03","10:36"],["M071","12","10:34","C","L","SRH04","SRH05","10:30"],["M042","12","10:34","D","L","SRE04","SRE07","8/11 A 15:06"],["M077","12","10:40","A","L","SRE01","SRE03","10:54"],["M096","12","10:40","B","L","SRM04","SRM07","11:48"],["M034","12","10:40","C","L","SRM08","SRM10","8/11 B 14:36"],["M044","12","10:40","D","L","SRH01","SRH07","8/11 C 15:06"],["M052","12","10:46","A","L","SRE09","SRE10","8/11 15:36"],["M049","12","10:46","B","L","SRM05","SRM06","8/11 15:24"],["M076","12","10:46","C","L","SRH03","SRH06","10:48"],["M014","12","10:46","D","L","SRM09","SRM12","8/11 B 13:36"],["M064","12","10:52","A","L","SRE02","SRE05","10:12"],["M089","12","10:52","B","L","SRM03","SRM11","11:30"],["M094","12","10:52","C","L","SRH02","SRH04","11:42"],["M033","12","10:52","D","L","SRE12","SRE14","8/11 A 14:36"],["M080","12","11:04","A","L","SRM04","SRM06","B 11:00"],["M055","12","11:04","B","L","SRM09","SRM10","8/11 15:42"],["M085","12","11:04","C","L","SRH01","SRH03","11:12"],["M082","12","11:04","D","L","SRE07","SRE10","A 11:06"],["M079","12","11:10","A","L","SRE02","SRE04","11:00"],["M074","12","11:10","B","L","SRM08","SRM11","10:42"],["M081","12","11:10","C","L","SRH02","SRH07","11:00"],["M088","12","11:10","D","L","SRE06","SRE09","A 11:30"],["M091","12","11:16","A","L","SRE05","SRE08","11:36"],["M092","12","11:16","B","L","SRM01","SRM05","11:36"],["M090","12","11:16","C","L","SRH05","SRH06","11:30"],["M097","12","13:00","A","S","SRES2","SRES3",""],["M098","12","13:06","A","S","SRES1","SRES4",""],["M099","12","13:12","B","S","SRMS2","SRMS3",""],["M100","12","13:18","B","S","SRMS1","SRMS4",""],["M101","12","13:42","C","T","SREF3","SREF4",""],["M102","12","13:48","C","T","SRMF3","SRMF4",""],["M103","12","14:06","A","F","SRHF1","SRHF2",""],["M104","12","14:18","B","F","SREF1","SREF2",""],["M105","12","14:30","C","F","SRMF1","SRMF2",""]];
 const PRELOAD = [["M001",2,0],["M002",2,6],["M003",0,8],["M004",1,5],["M011",3,5],["M005",0,5],["M006",0,1],["M010",4,0],["M016",1,2],["M012",10,1],["M015",6,4],["M007",4,4],["M013",4,2]];
 
 </script>
@@ -582,10 +582,11 @@ function rec(id) {
   };
 }
 function slotTime(m) { const o = Store.data.sched[m.id]; return o && o.t ? o.t : m.time; }
+function slotField(m) { const o = Store.data.sched[m.id]; return o && o.f ? o.f : m.field; }
 function slotDate(m) { const o = Store.data.sched[m.id]; return o && o.d ? '2026-08-' + o.d : m.date; }
 function ordered() {
   return MATCHES.slice().sort((a, b) =>
-    (slotDate(a) + slotTime(a)).localeCompare(slotDate(b) + slotTime(b)) || a.field.localeCompare(b.field));
+    (slotDate(a) + slotTime(a)).localeCompare(slotDate(b) + slotTime(b)) || slotField(a).localeCompare(slotField(b)));
 }
 function remainOf(r) { return r.rn && r.en ? Math.max(0, r.en - Store.now()) : Math.max(0, r.rm); }
 
@@ -816,7 +817,7 @@ function viewJudge(refs) {
   const fFilter = ME.field || (localStorage.getItem('rr26o.jf') || '');
   const pendOnly = localStorage.getItem('rr26o.jp') !== '0';
   const list = ordered().filter(m => {
-    if (fFilter && m.field !== fFilter) return false;
+    if (fFilter && slotField(m) !== fFilter) return false;
     if (pendOnly && rec(m.id).st === 'F') return false;
     return true;
   });
@@ -824,7 +825,7 @@ function viewJudge(refs) {
   const listHtml = list.map(m => {
     const r = rec(m.id), h = slot(m, 'h', refs), a = slot(m, 'a', refs);
     return `<div class="mrow ${r.st === 'F' ? 'fin' : ''} ${m.id === selMatch ? 'on' : ''}" data-mid="${m.id}">
-      <div><div class="tm">${slotTime(m)}</div><span class="pill ${m.division}">${m.field}</span></div>
+      <div><div class="tm">${slotTime(m)}</div><span class="pill ${m.division}">${slotField(m)}</span></div>
       <div><div class="vs">${esc(h.name)} <span class="muted">vs</span> ${esc(a.name)}</div>
       <div class="tid">${m.hr} · ${m.ar}${m.stage !== 'league' ? ' · ' + stageLabel(m.stage) : ''}${m.wasAt ? ' · <span class="pill moved">' + T('moved') + '</span>' : ''}</div></div>
       <div>${r.st === 'F' ? `<b>${r.hs}:${r.as}</b>` : `<span class="pill ${r.st === 'L' ? 'live' : 'scheduled'}">${T(r.st === 'L' ? 'live' : 'scheduled')}</span>`}</div></div>`;
@@ -883,7 +884,7 @@ function panelJudge(refs, canEdit) {
     tabs += `<button data-per="${i}" class="${r.pr === i ? 'on' : ''}" ${fin || !canEdit ? 'disabled' : ''}>${T(i === 1 ? 'firstHalf' : 'secondHalf')}</button>`;
 
   return `<div class="card" style="margin-bottom:12px"><div class="row">
-      <span class="pill ${m.division}">${T(m.division)} · ${T('field')} ${m.field}</span>
+      <span class="pill ${m.division}">${T(m.division)} · ${T('field')} ${slotField(m)}</span>
       <span class="pill ${m.stage === 'league' ? 'scheduled' : 'S'}">${stageLabel(m.stage)}</span>
       <b class="tid">${m.id}</b><span class="muted tiny">${slotDate(m)} ${slotTime(m)}</span>
       ${m.wasAt ? `<span class="pill moved">${T('moved')} · ${T('wasAt').replace('%s', m.wasAt)}</span>` : ''}
@@ -923,7 +924,7 @@ function viewScreen(refs) {
   const fields = f ? [f] : ['A', 'D', 'B', 'C'];
   const om = ordered();
   const active = fd => {
-    const pool = om.filter(m => m.field === fd);
+    const pool = om.filter(m => slotField(m) === fd);
     const lv = pool.filter(m => rec(m.id).st === 'L');
     if (lv.length) { lv.sort((x, y) => (rec(y.id).rn ? 1 : 0) - (rec(x.id).rn ? 1 : 0)); return lv[0]; }
     return pool.find(m => rec(m.id).st !== 'F') || pool.slice().reverse().find(m => rec(m.id).st === 'F') || null;
@@ -948,9 +949,9 @@ function viewScreen(refs) {
       <div class="st">${mercy ? T('mercy') : T(r.pr === 2 ? 'secondHalf' : 'firstHalf')}</div></div>`;
   }).join('');
 
-  const up = om.filter(m => rec(m.id).st !== 'F' && (!f || m.field === f)).slice(0, 9).map(m => {
+  const up = om.filter(m => rec(m.id).st !== 'F' && (!f || slotField(m) === f)).slice(0, 9).map(m => {
     const h = slot(m, 'h', refs), a = slot(m, 'a', refs);
-    return `<div class="upitem"><div class="t">${slotDate(m).slice(5)} ${slotTime(m)} · ${T('field')} ${m.field}
+    return `<div class="upitem"><div class="t">${slotDate(m).slice(5)} ${slotTime(m)} · ${T('field')} ${slotField(m)}
       <span class="pill ${m.division}">${T(m.division)}</span></div>
       <div class="n">${esc(h.name)} <span class="muted">vs</span> ${esc(a.name)}</div></div>`;
   }).join('') || '<p class="muted tiny">—</p>';
@@ -1042,7 +1043,7 @@ function viewSchedule(refs) {
       <p class="tiny muted" style="margin:0 0 9px">${T('deadlineNote')}</p>
       <table><thead><tr><th>${T('match')}</th><th>${T('field')}</th><th>${T('time')}</th><th>${T('home')}</th><th>${T('away')}</th></tr></thead><tbody>
       ${moved.map(m => { const h = slot(m, 'h', refs), a = slot(m, 'a', refs);
-        return `<tr><td class="tid">${m.id}</td><td>${m.field}</td>
+        return `<tr><td class="tid">${m.id}</td><td>${slotField(m)}</td>
         <td><b>${slotTime(m)}</b> <span class="muted tiny" style="text-decoration:line-through">${m.wasAt}</span></td>
         <td>${esc(h.name)}</td><td>${esc(a.name)}</td></tr>`; }).join('')}</tbody></table>
     </div>
@@ -1065,7 +1066,7 @@ function viewSchedule(refs) {
         const w = r.st === 'F' ? (r.w === 'D' ? T('draw') : (TM[r.w] || {}).name || '') : '';
         return `<tr><td class="tid">${slotDate(m).slice(5)}</td>
         <td class="tid">${slotTime(m)}${m.wasAt ? ' <span class="pill moved">!</span>' : ''}</td>
-        <td><span class="pill ${m.division}">${m.field}</span></td>
+        <td><span class="pill ${m.division}">${slotField(m)}</span></td>
         <td class="tid">${m.id}${m.stage !== 'league' ? ' <span class="pill S">' + stageLabel(m.stage) + '</span>' : ''}</td>
         <td>${esc(h.name)}</td><td class="num"><b>${r.st === 'F' ? r.hs + ':' + r.as : '–'}</b></td><td>${esc(a.name)}</td>
         <td>${esc(w)}</td><td class="tid">${esc(r.j)}</td>
@@ -1160,7 +1161,7 @@ function wire(refs) {
   on('#jPend', 'onchange', e => { localStorage.setItem('rr26o.jp', e.target.checked ? '1' : '0'); render(); });
   on('#jNext', 'onclick', () => {
     const f = ME.field || localStorage.getItem('rr26o.jf') || '';
-    const n = ordered().find(m => rec(m.id).st !== 'F' && (!f || m.field === f));
+    const n = ordered().find(m => rec(m.id).st !== 'F' && (!f || slotField(m) === f));
     if (n) { selMatch = n.id; localStorage.setItem('rr26o.match', n.id); render(); }
   });
   on('#sField', 'onchange', e => { localStorage.setItem('rr26o.sf', e.target.value); render(); });
@@ -1241,7 +1242,7 @@ function editMatch(id, refs) {
   const t = prompt(`${T('time')} (HH:MM)`, slotTime(m)); if (t === null) return;
   const H = Math.max(0, Math.min(RULES.mercy * 2, Math.round(Number(hs) || 0))), A = Math.max(0, Math.min(RULES.mercy * 2, Math.round(Number(as) || 0)));
   Store.update('m/' + id, { hs: H, as: A, st: 'F', w: H > A ? h.id : A > H ? a.id : 'D', j: ME.name, sb: new Date().toISOString(), hid: h.id, aid: a.id });
-  if (t && t !== slotTime(m)) Store.update('sched/' + id, { t, d: slotDate(m).slice(8), f: m.field });
+  if (t && t !== slotTime(m)) Store.update('sched/' + id, { t, d: slotDate(m).slice(8), f: slotField(m) });
   Store.log(id, 'admin_edit', `${H}:${A} @${t}`);
   toast('OK', 'ok');
 }
@@ -1253,7 +1254,7 @@ function csvResults(refs) {
   for (const m of ordered()) {
     const r = rec(m.id), h = slot(m, 'h', refs), a = slot(m, 'a', refs);
     const res = r.st !== 'F' ? '' : r.w === 'D' ? 'DRAW' : r.w === h.id ? 'HOME' : 'AWAY';
-    lines.push([m.id, slotDate(m), slotTime(m), m.wasAt || '', m.field, m.division, m.stage, m.hr, h.id || '', h.ok ? h.name : '',
+    lines.push([m.id, slotDate(m), slotTime(m), m.wasAt || '', slotField(m), m.division, m.stage, m.hr, h.id || '', h.ok ? h.name : '',
       r.st === 'F' ? r.hs : '', m.ar, a.id || '', a.ok ? a.name : '', r.st === 'F' ? r.as : '', res,
       r.w === 'D' ? '' : r.w || '', r.w && r.w !== 'D' ? (TM[r.w] || {}).name || '' : '', r.j, r.nt, r.sb].map(csvCell).join(','));
   }
